@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Controls Section -->
+<div class="mb-6 flex justify-between items-center flex-wrap gap-4">
+    <!-- Category Filter -->
+    <div>
+        <label for="category-filter" class="text-sm text-gray-400 mr-2">Filter by Category:</label>
+        <select
+            id="category-filter"
+            class="category-select"
+            hx-get="/filter"
+            hx-target="#card-container"
+            hx-include="[name='category']"
+            name="category"
+        >
+            <option value="All">All Categories</option>
+            {% for category in categories %}
+            <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<!-- Card Container (HTMX will swap this) -->
+<div id="card-container">
+    {% include "partials/card.html" %}
+</div>
+
+<!-- Keyboard Shortcuts Info -->
+<div class="mt-8 text-center text-sm text-gray-500">
+    <p>Click card to flip • Use navigation buttons to browse</p>
+</div>
+{% endblock %}

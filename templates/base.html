@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Blind 75 Flashcards{% endblock %}</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- HTMX CDN -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    <!-- Custom CSS for flip animation -->
+    <style>
+        body {
+            background-color: #1a1a2e;
+            color: #eaeaea;
+        }
+
+        .flashcard-container {
+            perspective: 1000px;
+            min-height: 500px;
+        }
+
+        .flashcard {
+            background-color: #16213e;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .flashcard:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .difficulty-easy {
+            background-color: #00b8a3;
+            color: white;
+        }
+
+        .difficulty-medium {
+            background-color: #ffc01e;
+            color: #1a1a2e;
+        }
+
+        .difficulty-hard {
+            background-color: #ff375f;
+            color: white;
+        }
+
+        .code-block {
+            background-color: #0f3460;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .nav-button {
+            background-color: #0f3460;
+            transition: background-color 0.2s;
+        }
+
+        .nav-button:hover {
+            background-color: #1a4d7a;
+        }
+
+        .category-select {
+            background-color: #16213e;
+            border: 1px solid #0f3460;
+            color: #eaeaea;
+            border-radius: 6px;
+            padding: 0.5rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Header -->
+        <header class="mb-8 text-center">
+            <h1 class="text-4xl font-bold mb-2">Blind 75 Flashcards</h1>
+            <p class="text-gray-400">Master LeetCode Problems</p>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-12 text-center text-gray-500 text-sm">
+            <p>Built with FastAPI + HTMX + Tailwind CSS</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!-- Progress Indicator -->
+<div class="mb-4 text-right text-sm text-gray-400">
+    <span>{{ current_index }}/{{ total }}</span>
+</div>
+
+<!-- Flashcard Component -->
+<div class="flashcard-container">
+    {% if not flipped %}
+    <!-- FRONT SIDE - Problem -->
+    <div
+        class="flashcard p-8 cursor-pointer"
+        hx-get="/card/{{ problem.id }}/answer"
+        hx-target="#card-container"
+        hx-swap="innerHTML"
+    >
+        <!-- Header with title and difficulty -->
+        <div class="mb-6 flex justify-between items-start">
+            <h2 class="text-2xl font-bold">{{ problem.title }}</h2>
+            <span class="difficulty-{{ problem.difficulty.lower() }} px-3 py-1 rounded-full text-sm font-semibold">
+                {{ problem.difficulty }}
+            </span>
+        </div>
+
+        <!-- Category Badge -->
+        <div class="mb-4">
+            <span class="bg-blue-900 text-blue-200 px-3 py-1 rounded text-sm">
+                {{ problem.category }}
+            </span>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-3 text-gray-300">Problem:</h3>
+            <p class="text-gray-300 leading-relaxed whitespace-pre-line">{{ problem.description }}</p>
+        </div>
+
+        <!-- Examples -->
+        {% if problem.examples %}
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-3 text-gray-300">Examples:</h3>
+            {% for example in problem.examples %}
+            <div class="bg-gray-800 p-4 rounded mb-3">
+                <pre class="text-sm text-gray-300">{{ example }}</pre>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Constraints -->
+        {% if problem.constraints %}
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-3 text-gray-300">Constraints:</h3>
+            <ul class="list-disc list-inside text-gray-400 text-sm space-y-1">
+                {% for constraint in problem.constraints %}
+                <li>{{ constraint }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Click to flip hint -->
+        <div class="mt-8 text-center">
+            <p class="text-gray-500 text-sm">Click to see solution ▼</p>
+        </div>
+    </div>
+
+    {% else %}
+    <!-- BACK SIDE - Solution -->
+    <div
+        class="flashcard p-8 cursor-pointer"
+        hx-get="/card/{{ problem.id }}"
+        hx-target="#card-container"
+        hx-swap="innerHTML"
+    >
+        <!-- Header with title and difficulty -->
+        <div class="mb-6 flex justify-between items-start">
+            <h2 class="text-2xl font-bold">{{ problem.title }}</h2>
+            <span class="difficulty-{{ problem.difficulty.lower() }} px-3 py-1 rounded-full text-sm font-semibold">
+                {{ problem.difficulty }}
+            </span>
+        </div>
+
+        <!-- Category Badge -->
+        <div class="mb-4">
+            <span class="bg-blue-900 text-blue-200 px-3 py-1 rounded text-sm">
+                {{ problem.category }}
+            </span>
+        </div>
+
+        <!-- Explanation -->
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-3 text-green-400">💡 Approach:</h3>
+            <p class="text-gray-300 leading-relaxed">{{ problem.explanation }}</p>
+        </div>
+
+        <!-- Code Solution -->
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-3 text-blue-400">📝 Solution:</h3>
+            <div class="code-block">
+                <pre><code>{{ problem.code }}</code></pre>
+            </div>
+        </div>
+
+        <!-- Click to flip back hint -->
+        <div class="mt-8 text-center">
+            <p class="text-gray-500 text-sm">Click to see problem ▲</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Navigation Buttons -->
+<div class="mt-6 flex justify-center gap-4">
+    <button
+        class="nav-button px-6 py-3 rounded-lg font-semibold"
+        hx-get="/prev/{{ problem.id }}"
+        hx-target="#card-container"
+        hx-swap="innerHTML"
+    >
+        ◀ Previous
+    </button>
+
+    <button
+        class="nav-button px-6 py-3 rounded-lg font-semibold"
+        hx-get="/next/{{ problem.id }}"
+        hx-target="#card-container"
+        hx-swap="innerHTML"
+    >
+        Next ▶
+    </button>
+</div>
