@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import json
+import random
 from pathlib import Path
 
 app = FastAPI()
@@ -16,7 +17,9 @@ templates = Jinja2Templates(directory="templates")
 # Load problems data
 def load_problems():
     with open("data/problems.json", "r", encoding="utf-8") as f:
-        return json.load(f)
+        data = json.load(f)
+        random.shuffle(data)  # Randomize the order
+        return data
 
 problems = load_problems()
 
