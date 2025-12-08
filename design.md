@@ -1,239 +1,254 @@
 # Blind 75 Flashcard App - Design Document
 
 ## Overview
-A flashcard application to help revise the Blind 75 LeetCode problems. Each card displays a problem on the front, and when flipped, shows a brief explanation of the approach followed by the solution code.
+A flashcard application to help revise the Blind 75 LeetCode problems. Each card displays a problem on the front with collapsible hints, and when flipped, shows a brief explanation of the approach followed by the solution code.
+
+**Philosophy: Python-First** - This is a pure Python web application. JavaScript and CSS are used minimally (HTMX for interactivity, basic CSS for styling).
 
 ---
 
-## Features
+## Features Implemented
 
-### Core Features
-- Display all 75 Blind 75 LeetCode problems as flashcards
-- Flip animation to reveal answer
-- Answer shows:
-  1. Brief explanation of the approach/algorithm
+### Core Features ✅
+- **49 LeetCode problems** from Blind 75 list with complete documentation
+- Interactive flashcard interface with instant flip
+- **Collapsible hints** on problem side (native HTML `<details>` elements)
+- **Pseudocode sections** where available
+- Answer side shows:
+  1. Explanation of the approach/algorithm
   2. Solution code (Python)
-- Navigate between cards (next/previous)
-- Track progress (solved/unsolved)
+- Navigate between cards (next/previous with wraparound)
+- **Randomized problem order** on each server restart
+- Progress tracking (X/49 counter)
+- Category-based filtering (Arrays, Dynamic Programming, Trees, etc.)
 
-### Nice-to-Have Features
-- Filter by category (Arrays, Binary Search, Trees, etc.)
-- Mark cards as "mastered" or "needs review"
-- Shuffle mode
-- Dark/Light theme
-- Keyboard shortcuts for navigation
-- Progress persistence (localStorage)
+### Additional Features ✅
+- Dark theme UI optimized for extended study
+- Responsive design for desktop and mobile
+- Auto-updating navigation buttons (HTMX swaps)
+- Clean, minimal interface
 
 ---
 
-## Tech Stack
+## Tech Stack (Final Implementation)
 
-| Layer | Technology |
-|-------|------------|
-| Frontend | React + TypeScript |
-| Styling | Tailwind CSS |
-| Build Tool | Vite |
-| State | React useState/useContext |
-| Storage | localStorage |
+| Layer | Technology | Purpose |
+|-------|------------|---------|
+| Package Manager | `uv` | Modern Python package manager |
+| Backend | FastAPI | Pure Python web framework |
+| Templating | Jinja2 | Python-based templating engine |
+| Interactivity | HTMX (CDN) | Declarative AJAX, no custom JS needed |
+| Styling | Tailwind CSS (CDN) | Utility-first CSS, no build step |
+| Animations | Pure CSS | Card hover effects, transitions |
+| Data Storage | JSON file | All 49 problems with metadata |
+| Data Parsing | Python script | Extracts problems from source repo |
 
-## Deployment Options
+**JavaScript Usage**: Only HTMX library (~14KB, declarative HTML attributes). Zero custom JavaScript written.
 
-This is a **static web app** - no backend required. All data is bundled with the app.
+**CSS Usage**: Tailwind CSS via CDN + minimal custom CSS for card styling (~50 lines)
 
-### Self-Hosting Options
+---
 
-1. **Local Development**
-   ```bash
-   npm run dev
-   # Opens at http://localhost:5173
-   ```
+## Deployment
 
-2. **Build & Serve Locally**
-   ```bash
-   npm run build
-   npx serve dist
-   # Opens at http://localhost:3000
-   ```
+### Running Locally
 
-3. **Docker (Optional)**
-   ```bash
-   docker build -t blind75-flashcards .
-   docker run -p 8080:80 blind75-flashcards
-   # Opens at http://localhost:8080
-   ```
+**Development Mode:**
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+uv run uvicorn main:app --reload
+# Opens at http://localhost:8000
+```
 
-4. **Free Hosting** (if you want to access from anywhere)
-   - Vercel / Netlify / GitHub Pages (all free, one-click deploy)
+**Production Mode:**
+```bash
+uv run uvicorn main:app --host 0.0.0.0 --port 8000
+```
+
+### Hosting Options
+- **Railway** / **Render** / **Fly.io** (free tiers support Python/FastAPI)
+- **Docker** containerization supported
+- Self-hosted on any Linux/macOS server
 
 ---
 
 ## Data Structure
 
-```typescript
-interface Problem {
-  id: number;
-  title: string;
-  difficulty: 'Easy' | 'Medium' | 'Hard';
-  category: string;
-  description: string;
-  examples: Example[];
-  constraints: string[];
-  explanation: string;
-  code: string;
-}
-
-interface Example {
-  input: string;
-  output: string;
-  explanation?: string;
-}
-
-interface UserProgress {
-  solvedIds: number[];
-  masteredIds: number[];
-  currentIndex: number;
+```python
+# problems.json structure
+{
+  "id": int,
+  "title": str,
+  "difficulty": "Easy" | "Medium" | "Hard",
+  "category": str,
+  "description": str,
+  "examples": list[str],
+  "constraints": list[str],
+  "hints": list[str],           # NEW: Collapsible hints
+  "pseudocode": str,             # NEW: Algorithm pseudocode
+  "explanation": str,
+  "code": str                    # Python solution
 }
 ```
 
 ---
 
-## Component Structure
+## Project Structure (Actual)
 
 ```
-src/
-├── components/
-│   ├── Flashcard.tsx        # Main flip card component
-│   ├── CardFront.tsx        # Problem display (question side)
-│   ├── CardBack.tsx         # Answer display (explanation + code)
-│   ├── Navigation.tsx       # Next/Prev buttons
-│   ├── ProgressBar.tsx      # Shows completion progress
-│   ├── CategoryFilter.tsx   # Filter by problem category
-│   └── Header.tsx           # App title and controls
+experimental_cluade/
+├── main.py                     # FastAPI app with all routes
+├── parse_problems.py           # Script to generate problems.json
 ├── data/
-│   └── problems.ts          # All 75 problems data
-├── hooks/
-│   └── useProgress.ts       # Progress tracking hook
-├── App.tsx
-├── main.tsx
-└── index.css
+│   └── problems.json           # All 49 problems
+├── templates/
+│   ├── base.html               # Base layout with Tailwind + HTMX
+│   ├── index.html              # Main page with category filter
+│   └── partials/
+│       └── card.html           # Flashcard component (front/back)
+├── static/                     # Empty (using CDN for styles)
+├── blind_75_flashcard_app/     # Git submodule (source problems)
+├── pyproject.toml              # uv dependencies
+├── uv.lock                     # Locked dependencies
+└── README.md                   # Installation & usage
 ```
 
 ---
 
-## Blind 75 Categories
+## Problem Categories (Available)
 
-1. **Arrays & Hashing** (9 problems)
-2. **Two Pointers** (5 problems)
-3. **Sliding Window** (6 problems)
-4. **Stack** (7 problems)
-5. **Binary Search** (7 problems)
-6. **Linked List** (11 problems)
-7. **Trees** (15 problems)
-8. **Tries** (3 problems)
-9. **Heap / Priority Queue** (1 problem)
-10. **Backtracking** (4 problems)
-11. **Graphs** (6 problems)
-12. **Dynamic Programming** (11 problems)
-13. **Greedy** (2 problems)
-14. **Intervals** (5 problems)
-15. **Math & Geometry** (3 problems)
-16. **Bit Manipulation** (5 problems)
+Based on the 49 problems currently in the app:
+
+1. **Arrays** (10 problems)
+2. **Binary & Bit Manipulation** (4 problems)
+3. **Dynamic Programming** (11 problems)
+4. **Graphs** (1 problem)
+5. **Intervals** (3 problems)
+6. **Linked List** (5 problems)
+7. **Matrix** (3 problems)
+8. **String** (9 problems)
+9. **Trees** (3 problems)
 
 ---
 
-## UI Wireframe
+## API Routes
 
-```
-┌─────────────────────────────────────────────────────┐
-│  Blind 75 Flashcards          [Filter ▼] [Progress] │
-├─────────────────────────────────────────────────────┤
-│                                                     │
-│  ┌───────────────────────────────────────────────┐  │
-│  │                                               │  │
-│  │   1. Two Sum                        [Easy]    │  │
-│  │   ─────────────────────────────────────────   │  │
-│  │                                               │  │
-│  │   Given an array of integers nums and an     │  │
-│  │   integer target, return indices of the two  │  │
-│  │   numbers such that they add up to target.   │  │
-│  │                                               │  │
-│  │   Example 1:                                  │  │
-│  │   Input: nums = [2,7,11,15], target = 9      │  │
-│  │   Output: [0,1]                               │  │
-│  │                                               │  │
-│  │                    [Click to Flip]            │  │
-│  │                                               │  │
-│  └───────────────────────────────────────────────┘  │
-│                                                     │
-│            [◀ Prev]    3/75    [Next ▶]             │
-│                                                     │
-└─────────────────────────────────────────────────────┘
-```
+All routes implemented in `main.py`:
 
-**Flipped State (Answer Side):**
-```
-┌───────────────────────────────────────────────┐
-│                                               │
-│   💡 Approach                                 │
-│   ─────────────────────────────────────────   │
-│   Use a hash map to store each number and    │
-│   its index. For each number, check if       │
-│   (target - num) exists in the map.          │
-│                                               │
-│   Time: O(n) | Space: O(n)                   │
-│                                               │
-│   📝 Solution                                 │
-│   ─────────────────────────────────────────   │
-│   ```python                                   │
-│   def twoSum(nums, target):                  │
-│       seen = {}                               │
-│       for i, num in enumerate(nums):         │
-│           diff = target - num                │
-│           if diff in seen:                   │
-│               return [seen[diff], i]         │
-│           seen[num] = i                      │
-│   ```                                         │
-│                                               │
-│                    [Click to Flip]            │
-│                                               │
-└───────────────────────────────────────────────┘
-```
+| Route | Method | Description |
+|-------|--------|-------------|
+| `/` | GET | Main page with first flashcard and category filter |
+| `/card/{id}` | GET | Get specific card (front side) - HTMX partial |
+| `/card/{id}/answer` | GET | Get card with solution (back side) - HTMX partial |
+| `/next/{id}` | GET | Navigate to next card - HTMX partial |
+| `/prev/{id}` | GET | Navigate to previous card - HTMX partial |
+| `/filter?category=X` | GET | Filter cards by category - HTMX partial |
 
 ---
 
-## Color Scheme
+## HTMX Flow
 
-| Element | Color |
-|---------|-------|
+```
+User clicks card → hx-get="/card/1/answer" → Server returns back side → HTMX swaps content
+
+User clicks "Next" → hx-get="/next/1" → Server returns card 2 → HTMX swaps card + buttons
+
+User selects filter → hx-get="/filter?category=Trees" → Server returns first Trees card
+```
+
+**Key Feature**: Navigation buttons are included in the card partial, so they update automatically with the correct IDs when HTMX swaps content.
+
+---
+
+## UI Layout
+
+**Front Side (Problem):**
+- Title and difficulty badge
+- Category tag
+- Problem description
+- Examples (in code blocks)
+- Constraints (bullet list)
+- **💡 Hints** (collapsible details elements)
+- **Pseudocode** (collapsible, if available)
+- Progress counter (top right)
+- Navigation buttons (bottom)
+
+**Back Side (Solution):**
+- Title and difficulty badge
+- Category tag
+- 💡 Approach explanation
+- 📝 Solution code (Python)
+- Progress counter
+- Navigation buttons
+
+---
+
+## Color Scheme (Implemented)
+
+| Element | Color Code |
+|---------|-----------|
 | Easy | `#00b8a3` (Green) |
 | Medium | `#ffc01e` (Yellow) |
 | Hard | `#ff375f` (Red) |
-| Background | `#1a1a2e` (Dark) |
-| Card | `#16213e` |
-| Text | `#eaeaea` |
-| Accent | `#0f3460` |
+| Background | `#1a1a2e` (Dark Navy) |
+| Card | `#16213e` (Dark Blue) |
+| Text | `#eaeaea` (Light Gray) |
+| Accent/Buttons | `#0f3460` (Blue) |
+| Code Blocks | `#0f3460` (Blue) |
+| Hints | `#ffc01e` (Yellow) - collapsible |
 
 ---
 
-## Implementation Plan
+## Key Implementation Details
 
-1. **Setup** - Initialize Vite + React + TypeScript + Tailwind
-2. **Data** - Create problems.ts with all 75 problems
-3. **Flashcard Component** - Build flip animation card
-4. **Navigation** - Add prev/next and progress display
-5. **Filtering** - Add category filter
-6. **Progress Tracking** - Implement localStorage persistence
-7. **Polish** - Keyboard shortcuts, animations, responsive design
+### Randomization
+Problems are shuffled using `random.shuffle()` when the server starts. Each restart gives a new random order for varied practice.
+
+### Collapsible Hints
+Uses native HTML `<details>` and `<summary>` elements - no JavaScript required. Hints are extracted from the source repo's readme files.
+
+### Progress Tracking
+Simple counter showing current position (e.g., "3/49"). Updates automatically via HTMX swaps.
+
+### Category Filtering
+Dropdown filter re-renders the first card in the selected category. Backend handles the filtering logic.
 
 ---
 
-## Keyboard Shortcuts
+## Data Source
 
-| Key | Action |
-|-----|--------|
-| `Space` / `Enter` | Flip card |
-| `→` / `j` | Next card |
-| `←` / `k` | Previous card |
-| `m` | Mark as mastered |
-| `r` | Reset progress |
-| `s` | Shuffle cards |
+Problems extracted from: [Sugapriyan-P-K/blind75](https://github.com/Sugapriyan-P-K/blind75/)
+
+The `parse_problems.py` script:
+1. Scans the `blind_75_flashcard_app/` submodule
+2. Extracts from each `readme.md`:
+   - Title, description, examples, constraints
+   - Hints (from `<details>` tags)
+   - Pseudocode (if present)
+3. Pairs with corresponding `.py` solution files
+4. Generates `data/problems.json`
+
+**Note**: Only 49 of the 75 Blind problems have complete documentation in the source repo. The app includes all available documented problems.
+
+---
+
+## Future Enhancements (Not Implemented)
+
+- Spaced repetition system
+- Mark problems as "mastered"
+- Progress persistence (cookies/session)
+- Keyboard shortcuts for navigation
+- Search functionality
+- Filter by difficulty
+- Export progress/notes
+- Add remaining 26 problems as they become available
+
+---
+
+## Design Principles
+
+1. **Python-First**: Minimize JS/CSS, maximize Python
+2. **Simplicity**: No build tools, no npm, no bundlers
+3. **Fast Iteration**: Live reload, simple architecture
+4. **Self-Contained**: All dependencies via CDN or uv
+5. **Accessibility**: Semantic HTML, native elements

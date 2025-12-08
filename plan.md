@@ -76,33 +76,74 @@ experimental_cluade/
   - Navigation button updates via inline script
 
 ### Step 6: Add Navigation
-- [ ] Previous/Next buttons
-- [ ] Current position indicator (e.g., "3/75")
-- [ ] HTMX loads next/prev card without page reload
+- [x] Previous/Next buttons (included in card partial)
+- [x] Current position indicator ("X/49" at top right)
+- [x] HTMX loads next/prev card without page reload
+- [x] Navigation buttons update automatically with current card ID
 
 ### Step 7: Add Category Filter
-- [ ] Dropdown with all 16 categories
-- [ ] "All" option to show everything
-- [ ] HTMX updates card list on filter change
+- [x] Dropdown with all 9 available categories
+- [x] "All Categories" option to show everything
+- [x] HTMX updates card on filter change
 
-### Step 8: Add Progress Tracking
+### Step 8: Add Collapsible Hints ✨
+- [x] Extract hints from problem readme files
+- [x] Display hints as collapsible `<details>` elements on front side
+- [x] Show pseudocode (if available) in collapsible section
+- [x] Style hints with yellow/gold theme
+
+### Step 9: Add Randomization ✨
+- [x] Shuffle problems on server startup using `random.shuffle()`
+- [x] Different order each time server restarts
+
+### Step 10: Documentation & Deployment
+- [x] Create comprehensive README with installation instructions
+- [x] Add support for macOS and Ubuntu/Linux
+- [x] Initialize git repository
+- [x] Create GitHub repository
+- [x] Push code to GitHub
+- [x] Update design.md with actual implementation
+- [x] Update plan.md with completed steps
+
+---
+
+## Completed Features ✅
+
+1. ✅ Project setup with uv
+2. ✅ 49 problems loaded from source repo
+3. ✅ FastAPI backend with 6 routes
+4. ✅ Jinja2 templates (base, index, card partial)
+5. ✅ HTMX integration for dynamic updates
+6. ✅ Tailwind CSS styling (dark theme)
+7. ✅ Navigation (prev/next with wraparound)
+8. ✅ Category filtering
+9. ✅ Progress counter
+10. ✅ Collapsible hints on problem side
+11. ✅ Randomization on server start
+12. ✅ Git repository and GitHub deployment
+13. ✅ Comprehensive documentation
+
+---
+
+## Future Enhancements (Not Implemented)
+
+### Step 11: Progress Persistence (Optional)
 - [ ] Mark card as "mastered" button
 - [ ] Progress bar showing mastered/total
-- [ ] Store progress in localStorage (client-side)
-- [ ] Small JS snippet to handle localStorage
+- [ ] Store progress in cookies or session (server-side)
 
-### Step 9: Keyboard Shortcuts
-- [ ] Small vanilla JS for:
+### Step 12: Keyboard Shortcuts (Optional)
+- [ ] Small vanilla JS (~20 lines) for:
   - Space/Enter: flip card
   - Arrow keys: navigate
   - 'm': mark mastered
 
-### Step 10: Polish & Test
-- [ ] Test all 75 cards load correctly
-- [ ] Test flip animation smooth
-- [ ] Test navigation works
-- [ ] Test filters work
-- [ ] Mobile responsive check
+### Step 13: Additional Features (Optional)
+- [ ] Search functionality
+- [ ] Filter by difficulty
+- [ ] Spaced repetition algorithm
+- [ ] Export progress/notes
+- [ ] Add remaining 26 problems when available in source repo
 
 ---
 

@@ -58,9 +58,36 @@
         </div>
         {% endif %}
 
+        <!-- Hints (Collapsible) -->
+        {% if problem.hints %}
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-3 text-yellow-400">💡 Hints:</h3>
+            {% for hint in problem.hints %}
+            <details class="mb-2 bg-gray-800 rounded p-3">
+                <summary class="cursor-pointer text-sm font-semibold text-yellow-300 hover:text-yellow-200">
+                    Show Hint {{ loop.index }}
+                </summary>
+                <p class="mt-2 text-gray-300 text-sm">{{ hint }}</p>
+            </details>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Pseudocode (Collapsible) -->
+        {% if problem.pseudocode %}
+        <div class="mb-6">
+            <details class="bg-gray-800 rounded p-3">
+                <summary class="cursor-pointer text-sm font-semibold text-blue-300 hover:text-blue-200">
+                    Show Pseudocode
+                </summary>
+                <pre class="mt-2 text-gray-300 text-sm whitespace-pre-wrap">{{ problem.pseudocode }}</pre>
+            </details>
+        </div>
+        {% endif %}
+
         <!-- Click to flip hint -->
         <div class="mt-8 text-center">
-            <p class="text-gray-500 text-sm">Click to see solution ▼</p>
+            <p class="text-gray-500 text-sm">Click card to see solution ▼</p>
         </div>
     </div>
 

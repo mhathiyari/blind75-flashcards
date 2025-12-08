@@ -14,6 +14,12 @@
       "2 <= n <= 10^5",
       "0 <= height[i] <= 10^4"
     ],
+    "hints": [
+      "You can solve it in brute force O(n^2), which is not efficient. Try to solve it using two pointer method.",
+      "Always move the minimum hight pointer either left or right(increment or decrement) and also keep track of maximum from start to end.",
+      "Calculate amount of water at each step by getting the differnce of right - left and multiply it with the minimum height(either height[left] or height[right])."
+    ],
+    "pseudocode": "left -> 0\n    right -> height.length - 1\n    result -> 0\n    while left lessThan right\n      area -> (right - left) * (if height[left] lessThan height[right] then height[left] else height[right])\n      result -> if result greaterThan area then result else area\n      if height[left] isLessThan height[right] then left += 1 else right -= 1\n    return result",
     "explanation": "You can solve it in brute force O(n^2), which is not efficient. Try to solve it using two pointer method. Always move the minimum hight pointer either left or right(increment or decrement) and also keep track of maximum from start to end. Calculate amount of water at each step by getting the differnce of right - left and multiply it with the minimum height(either height[left] or height[right]).",
     "code": "class Solution:\n#     def maxArea(self, h: list[int]) -> int:\n#         res = 0\n#         for l in range(len(h)):\n#             for r in range(l + 1, len(h)):\n#                 area = (r - l) * min(h[l], h[r])\n#                 res = max(res, area) \n#         return res"
   },
@@ -32,6 +38,8 @@
       "10^9 <= target <= 10^9",
       "Only one valid answer exists."
     ],
+    "hints": [],
+    "pseudocode": "",
     "explanation": "Use optimal algorithm approach.",
     "code": "class Solution:\n    def twoSum(self, nums: list[int], target: int) -> list[int]:\n        hashMap = {} # index\n        for i, n in enumerate(nums):\n            diff = target - n\n            if diff in hashMap:\n                return [hashMap[diff],i]\n            hashMap[n] = i\n        return []"
   },
@@ -46,6 +54,12 @@
       "Input: prices = [7,6,4,3,1]\nOutput: 0\nExplanation: In this case, no transactions are done and the max profit = 0."
     ],
     "constraints": [],
+    "hints": [
+      "To gain maximum profit, you have to buy at the minimum price and sell when it's at the maximum price. So, think of the problem as tracking those minimum and maximum values.",
+      "Try solving it using the two-pointer concept.",
+      "Keep track of the minimum using one pointer and the maximum using another pointer. Also, track the maximum profit; update it only if the profit increases by changing the pointer. If the price at the 'r' pointer becomes less than the price at the 'l' pointer, shift 'r' to 'l' and increment 'r'. If the profit increases by doing this, update the max profit; otherwise, do not update it."
+    ],
+    "pseudocode": "l -> 0\n    r -> 1\n    maxProfit -> 0\n    for [i -> 1 to length(prices)]\n      if prices[l] < prices[r]\n           newProfit -> prices[r] - prices[l]\n           maxProfit -> if newProfit > maxProfit then newProfit else maxProfit\n      else\n           l -> r\n      r ++\n    return maxProfit",
     "explanation": "To gain maximum profit, you have to buy at the minimum price and sell when it's at the maximum price. So, think of the problem as tracking those minimum and maximum values. Try solving it using the two-pointer concept. Keep track of the minimum using one pointer and the maximum using another pointer. Also, track the maximum profit; update it only if the profit increases by changing the pointer. If the price at the 'r' pointer becomes less than the price at the 'l' pointer, shift 'r' to 'l' and increment 'r'. If the profit increases by doing this, update the max profit; otherwise, do not update it.",
     "code": "class Solution:\n    def maxProfit(self, prices: list[int]) -> int:\n        l, r = 0, 1\n        maxProfit = 0\n        while r < len(prices):\n            if prices[l] < prices[r]:\n                profit = prices[r] - prices[l]\n                maxProfit = max(maxProfit, profit)\n            else:\n                l = r\n            r += 1\n        return maxProfit"
   },
@@ -63,6 +77,8 @@
     "constraints": [
       "10^9 <= nums[i] <= 10^9"
     ],
+    "hints": [],
+    "pseudocode": "countSet -> hashSet()\n    for each number in array\n      if number exists in keyhs(countSet) then\n        return true\n      countSet.key(number).value(1)\n    return false",
     "explanation": "Use optimal algorithm approach.",
     "code": "class Solution:\n    def containsDuplicate(self, nums: list[int]) -> bool:\n        count = dict()\n        for i in range(len(nums)):\n            if nums[i] in count.keys():\n                return True\n            count[nums[i]] = 1\n        return False"
   },
@@ -81,6 +97,12 @@
       "30 <= nums[i] <= 30",
       "The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer."
     ],
+    "hints": [
+      "In this problem, every number should get multiplied by every other number in the array except itself. So, we could solve it in linear time by using two individual loops, one after another, creating two arrays: a prefix array that multiplies everything from the start, and a suffix array that multiplies everything from the end, except itself. Finally, multiply both and set the result in the result array.",
+      "Try to solve it using only result array as the same approach in hint 1.",
+      "Create two pointers to perform multiplication and store the previous value. In the first forward loop, set the first element of the result array to the value pointed to by the forward pointer, and then multiply the forward pointer with the current element. Perform the same operation in the backward loop, but in reverse order, using the same result array."
+    ],
+    "pseudocode": "result -> []length(nums)\n    pre -> 1\n    suf -> 1\n    length -> length(nums)\n    for i -> 0 to length -1\n      result[i] -> pre\n      pre -> pre * nums[i]\n    for i -> length - 1 to 0\n      result[i] -> result[i] * suf\n      suf -> suf * nums[i]\n    return result",
     "explanation": "In this problem, every number should get multiplied by every other number in the array except itself. So, we could solve it in linear time by using two individual loops, one after another, creating two arrays: a prefix array that multiplies everything from the start, and a suffix array that multiplies everything from the end, except itself. Finally, multiply both and set the result in the result array. Try to solve it using only result array as the same approach in hint 1. Create two pointers to perform multiplication and store the previous value. In the first forward loop, set the first element of the result array to the value pointed to by the forward pointer, and then multiply the forward pointer with the current element. Perform the same operation in the backward loop, but in reverse order, using the same result array.",
     "code": "class Solution:\n    def product(self, nums: list[int]) -> list[int]:\n        numsLen = len(nums)\n        res = [1] * numsLen\n        t = 1\n        p = 1\n        for i in range(numsLen):\n            if i < numsLen - 1:\n                p *= nums[i]\n                res[i+1] *= p\n            if i > 0:\n                t *= nums[numsLen - i]\n                res[(numsLen - 1) - i] *= t\n        return res"
   },
@@ -99,6 +121,11 @@
       "1 <= nums.length <= 10^5",
       "10^4 <= nums[i] <= 10^4"
     ],
+    "hints": [
+      "It follows similar patterns as previous problems; it's easy to come up with an O(n) solution.",
+      "I think there is no need for a hint here. Just track the currentSum and maxSum of the array at each iteration. If the currentSum becomes less than 0, then make it zero and take the maximum of both the currentSum and the already gained maxSum. That's all you need to solve it with a linear time algorithm."
+    ],
+    "pseudocode": "maxSubarr -> nums[0]\n    currentSum -> 0\n    for each number in nums\n      if currentSum < 0 then currentSum -> 0\n      currentSum -> currentSum + number\n      maxSubarr -> if maxSubarr > number then maxSubarr else currentSum \n    return maxSubarr",
     "explanation": "It follows similar patterns as previous problems; it's easy to come up with an O(n) solution. I think there is no need for a hint here. Just track the currentSum and maxSum of the array at each iteration. If the currentSum becomes less than 0, then make it zero and take the maximum of both the currentSum and the already gained maxSum. That's all you need to solve it with a linear time algorithm.",
     "code": "class Solution:\n    def maxSubArray(self, nums: list[int]) -> int:\n        maxSub = nums[0]\n        curSum = 0\n        for n in nums:\n            if curSum < 0:\n                curSum = 0\n            curSum += n\n            maxSub = max(maxSub, curSum)\n        return maxSub"
   },
@@ -117,6 +144,12 @@
       "10 <= nums[i] <= 10",
       "The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer."
     ],
+    "hints": [
+      "You can solve this problem in several ways, but the easy one method to think that how you solve the product of array except self problem and apply the same method here.",
+      "You can solve it in prefix and postfix multiplication method by taking maximum of both and also make sure that either of products doesn't get to zero.",
+      "Another method is taking minimum and maximum multiplication because the number could be in negative and become positive later. In this method keep track of currentMin and currentMax by taking max and min correspondingly and also update the maximum product with the result."
+    ],
+    "pseudocode": "result -> maximunm(nums)\n    currentMin -> 1\n    currentMax -> 1\n    for each num in nums\n      if num == 0 then currectMin -> 1, currentMax -> 1\n        continue\n      temp -> currentMax * num\n      currentMax -> maximum(num * currentMax, num * currentMin, num)\n      currentMin -> minimum(temp, num * currentMin, num)\n      result -> maximum(result, currentMax)\n    return result",
     "explanation": "You can solve this problem in several ways, but the easy one method to think that how you solve the product of array except self problem and apply the same method here. You can solve it in prefix and postfix multiplication method by taking maximum of both and also make sure that either of products doesn't get to zero. Another method is taking minimum and maximum multiplication because the number could be in negative and become positive later. In this method keep track of currentMin and currentMax by taking max and min correspondingly and also update the maximum product with the result.",
     "code": "class Solution:\n    def maxProduct(self, nums: list[int]) -> int:\n        res = max(nums)\n        currMin, currMax = 1, 1\n        for n in nums:\n            if n == 0:\n                currMax, currMin = 1, 1\n                continue\n            tmp = currMax * n\n            currMax = max(n * currMax , n * currMin, n)\n            currMin = min(tmp, n * currMin, n)\n            res = max(res, currMax)\n        return res"
   },
@@ -138,6 +171,11 @@
       "All the integers of nums are unique.",
       "nums is sorted and rotated between 1 and n times."
     ],
+    "hints": [
+      "This is pretty straight forward. We have to use binary search with little modification. Just try to think on your own to modify the binary search to find minimum in this array.",
+      "Usual mid element from binary search. Compare mid element is less than minimum then make it as a new min value then check whether the mid element is greater than left element which means that the left portion is in sorted order not in rotated so the left portions l pointer's value becomes the new min. Then shift l to mid + 1. Else if the mid is not greater than l which means mid pointer sits somewhere in the rotated portion, so now check with the right pointer make it as a new minimum and shift right to mid - 1. Finally, return the min at last."
+    ],
+    "pseudocode": "l -> 0\n    r -> nums.length - 1\n    minimum = nums[0]\n    while l lessThanOrEqual r\n      mid -> (l + r) floordiv 2\n      if nums[mid] lessThan minimum then minimum -> nums[mid]\n      if nums[mid] greaterThan nums[l] then\n        if nums[l] lessThan minimum then minimum -> nums[l]\n        l -> mid + 1\n      else\n        if nums[r] lessThan minimum then minimum -> nums[r]\n        r -> mid - 1\n    return minimum",
     "explanation": "This is pretty straight forward. We have to use binary search with little modification. Just try to think on your own to modify the binary search to find minimum in this array. Usual mid element from binary search. Compare mid element is less than minimum then make it as a new min value then check whether the mid element is greater than left element which means that the left portion is in sorted order not in rotated so the left portions l pointer's value becomes the new min. Then shift l to mid + 1. Else if the mid is not greater than l which means mid pointer sits somewhere in the rotated portion, so now check with the right pointer make it as a new minimum and shift right to mid - 1. Finally, return the min at last.",
     "code": "class Solution:\n    def findMin(self, nums: list[int]) -> int:\n        res = nums[0]\n        l, r = 0, len(nums) - 1\n        \n        while l <= r:\n            if nums[l] < nums[r]:\n                res = min(nums[l], res)\n            mid = (l + r) // 2\n            res = min(res, nums[mid])\n            if nums[mid] >= nums[l]:\n                l = mid + 1\n            else:\n                r = mid - 1     \n        return res"
   },
@@ -159,6 +197,11 @@
       "nums is an ascending array that is possibly rotated.",
       "10^4 <= target <= 10^4"
     ],
+    "hints": [
+      "This problem is similar to find minimum in rotated sorted array. Same method, try to solve it with a target.",
+      "Calculate mid check whether it equal to target or check whether nums mid element greater than left then we are in left sorted portion check the target is greater than nums[left] and also less than nums[mid] if it is then then shift right to mid - 1 else shift left to mid + 1. If mid is not greater than then check the target is less than nums[right] and also greater than mid so it is in right sorted portion then shift left to mid + 1 else shift right to mid - 1. That's all for the algorithm lastly return -1 at the end of loop if target isn't in the array."
+    ],
+    "pseudocode": "left -> 0\n    right -> nums.length - 1\n    while left lessThanOrEqualTo right\n      mid -> (left + right) // 2\n      if nums[mid] == target then return mid\n      elseif nums[mid] lessThanOrEqual nums[left] then\n        if target greaterThanOrEqual nums[left] and target lessThan nums[mid] then\n          right -> mid - 1\n        else\n          left -> mid + 1\n      else\n        if target lessThanOrEqual nums[right] and target greaterThan nums[mid] then\n          left -> mid + 1\n        else\n          right -> mid - 1\n    return -1",
     "explanation": "This problem is similar to find minimum in rotated sorted array. Same method, try to solve it with a target. Calculate mid check whether it equal to target or check whether nums mid element greater than left then we are in left sorted portion check the target is greater than nums[left] and also less than nums[mid] if it is then then shift right to mid - 1 else shift left to mid + 1. If mid is not greater than then check the target is less than nums[right] and also greater than mid so it is in right sorted portion then shift left to mid + 1 else shift right to mid - 1. That's all for the algorithm lastly return -1 at the end of loop if target isn't in the array.",
     "code": "class Solution:\n    def search(self, nums: list[int], target: int) -> int:\n        n = len(nums)\n        left, right = 0, n - 1\n        while left <= right:\n            mid = left + (right - left) // 2\n            \n            # Case 1: find target\n            if nums[mid] == target:\n                return mid\n            \n            # Case 2: subarray on mid's left is sorted\n            elif nums[mid] >= nums[left]:\n                if target >= nums[left] and target < nums[mid]:\n                    right = mid - 1\n                else:\n                    left = mid + 1\n                    \n            # Case 3: subarray on mid's right is sorted.\n            else:\n                if target <= nums[right] and target > nums[mid]:\n                    left = mid + 1\n                else:\n                    right = mid - 1\n        return -1"
   },
@@ -177,6 +220,11 @@
       "3 <= nums.length <= 3000",
       "10^5 <= nums[i] <= 10^5"
     ],
+    "hints": [
+      "Three sum is a superset of the problem twosum and the target is zero always and the triplet must not contain duplicates. First fix one number let say 'x' and it's left us with to find two number like twoSum",
+      "You can use hashmap to speed up the algorithm, but you can also sort the input array to avoid duplicates and also two sum on sorted array becomes faster usig two pointer method"
+    ],
+    "pseudocode": "result -> []\n    nums -> sort(nums)\n    for idx, num in nums:\n        if idx > 0 and num == nums[i - 1] then continue\n        l -> idx + 1\n        r -> nums.length - 1\n        while l lessThan r\n            threeSum -> num + nums[l] + nums[r]\n            if threeSum greaterThan 0 then r -= 1\n            elif threeSum lessThan 0 then l += 1\n            else\n                result.append([a, nums[l], nums[r]])\n                l += 1\n                while nums[l] == nums[l-1] and l lessThan r\n                    l += 1\n      return result",
     "explanation": "Three sum is a superset of the problem twosum and the target is zero always and the triplet must not contain duplicates. First fix one number let say 'x' and it's left us with to find two number like twoSum You can use hashmap to speed up the algorithm, but you can also sort the input array to avoid duplicates and also two sum on sorted array becomes faster usig two pointer method",
     "code": "class Solution:\n    def threeSum(self, nums: list[int]) -> list[list[int]]:\n        res = []\n        nums.sort()\n        for i, a in enumerate(nums):\n            if i > 0 and a == nums[i - 1]:\n                continue\n            l, r = i + 1, len(nums) - 1\n            while l < r:\n                threeSum = a + nums[l] + nums[r]\n                if threeSum > 0:\n                    r -= 1\n                elif threeSum < 0:\n                    l += 1\n                else:\n                    res.append([a, nums[l], nums[r]])\n                    l += 1\n                    while nums[l] == nums[l-1] and l < r:\n                        l += 1\n        return res"
   },
@@ -193,6 +241,11 @@
     "constraints": [
       "1000 <= a, b <= 1000"
     ],
+    "hints": [
+      "A and B can be either positive or negative. Logic gates to use in this ^ & << and also mask for negative numbers",
+      "Try to solve it recursive by adding bit by bit using xor and mask for addition and shift the bits to left by using leftshift with mask. Return when second element becomes zero. If the return valus is greater than 2**31 then it is a negative just return it's negative version of that result number."
+    ],
+    "pseudocode": "addVal(a, b, mask)  {\n      if b == 0 then return a;\n      return addVal((a^b) & mask, ((a&b)<<1) & mask, mask);\n    }\n    getSum(a, b) {\n      mask -> 0xFFFFFFFF // it's value is 2**32-1\n      value -> addVal(a, b, mask)\n      if value greaterThan 2^31 then return ~(value ^ mask) else return value;\n    }",
     "explanation": "A and B can be either positive or negative. Logic gates to use in this ^ & << and also mask for negative numbers Try to solve it recursive by adding bit by bit using xor and mask for addition and shift the bits to left by using leftshift with mask. Return when second element becomes zero. If the return valus is greater than 2**31 then it is a negative just return it's negative version of that result number.",
     "code": "class Solution:\n    def addVal(self, a: int, b: int, mask: int) -> int:\n        if b == 0:\n            return a\n        return self.addVal((a^b) & mask, ((a&b)<<1) & mask, mask)\n    def getSum(self, a: int, b: int) -> int:\n        mask = 0xFFFFFFFF\n        val = self.addVal(a, b, mask)\n        if val > 2**31:\n            return ~(val ^ mask)\n        else:\n            return val"
   },
@@ -210,6 +263,11 @@
     "constraints": [
       "The input must be a binary string of length 32."
     ],
+    "hints": [
+      "Try to think how bits work in each incretion of their unit place. How to get their digit place. If you know how the number could be in each bit you can calculate whether there will be 1 or 0. I know it sounds confusing just open hint 2.",
+      "Now say the input is 8(1000 in binary). Any number greater than 1 has atleast 1 one in it. If you see the binary representation of 8 1 in 4th place which indicates 8 remaining 0's in 3,2 and 1st place which indicates 4, 2, 1 respectively. if you note that everything is in two power so that we could divide the number by 2 everytime for each digitplace in bit so. 8 % 2 is 0 add it to result and divide by to by right shift it by 1 8 >> 1 = 4. now 4 % 2 = 0 add it to (res = 0) then 4 >> 1 = 2, 2 % 2 = 0 + res (res = 0) then 2 >> 1 = 1 now 1 % 2 = 1 + res (res = 1) 1 >> 1 = 0 loop terminates. At the end 8 has 1 bit"
+    ],
+    "pseudocode": "res -> 0\n    while n greaterThan 0\n      res -> res + n % 2\n      n -> n >> 1\n    return res",
     "explanation": "Try to think how bits work in each incretion of their unit place. How to get their digit place. If you know how the number could be in each bit you can calculate whether there will be 1 or 0. I know it sounds confusing just open hint 2. Now say the input is 8(1000 in binary). Any number greater than 1 has atleast 1 one in it. If you see the binary representation of 8 1 in 4th place which indicates 8 remaining 0's in 3,2 and 1st place which indicates 4, 2, 1 respectively. if you note that everything is in two power so that we could divide the number by 2 everytime for each digitplace in bit so. 8 % 2 is 0 add it to result and divide by to by right shift it by 1 8 >> 1 = 4. now 4 % 2 = 0 add it to (res = 0) then 4 >> 1 = 2, 2 % 2 = 0 + res (res = 0) then 2 >> 1 = 1 now 1 % 2 = 1 + res (res = 1) 1 >> 1 = 0 loop terminates. At the end 8 has 1 bit",
     "code": "class Solution:\n    def hammingWeight(self, n: int) -> int:\n        res = 0\n        while n:\n            n &= (n - 1)\n            res += 1\n        return res\nn = \"00000000000000000000000000001011\""
   },
@@ -230,6 +288,12 @@
       "0 <= nums[i] <= n",
       "All the numbers of nums are unique."
     ],
+    "hints": [
+      "They gave that every number should be in range from 0 to len(arr). You can sum the array and minus it from the actual sum of n (n*(n-1) // 2), but try to solve it in bit manipulation. You will solve it in O(1) space.",
+      "To do it in a binary way is little bit tough. For example let's take arr=[0,1,2,3,5] which length is 5 and we know that the missing number is 4. take an int var result and do the xor operation for each index with result and xor each number in that position with result and finally xor the length of the array with result return it.",
+      "previous example. res = 0 i = 0, num[i] = 0, res ^= 0 res ^= 0 (res = 0), i=1, num[i]=1 res^=1 res^= 1 (res = 0), i=2, num[i]=2 res ^= 2 res ^= 2 (res=0), i=3, num[i]=3 res^=3 res^=3 (res = 0), i=4, num[i]=5 res ^= 4 (res = 4) res ^= 5 (res = 1). After loop res ^= num.length res ^= 5 (res = 4). This happens because whenever two same elements got xor it will be 0 so that's why we xor the index and number so we find the inverse of number and when we xor with length it will return the missing number in that range."
+    ],
+    "pseudocode": "res -> 0\n    for i -> 0 to arr.length\n      res -> res ^ i\n      res -> res ^ arr[i]\n    res -> res ^ arr.length\n    return res",
     "explanation": "They gave that every number should be in range from 0 to len(arr). You can sum the array and minus it from the actual sum of n (n*(n-1) // 2), but try to solve it in bit manipulation. You will solve it in O(1) space. To do it in a binary way is little bit tough. For example let's take arr=[0,1,2,3,5] which length is 5 and we know that the missing number is 4. take an int var result and do the xor operation for each index with result and xor each number in that position with result and finally xor the length of the array with result return it. previous example. res = 0 i = 0, num[i] = 0, res ^= 0 res ^= 0 (res = 0), i=1, num[i]=1 res^=1 res^= 1 (res = 0), i=2, num[i]=2 res ^= 2 res ^= 2 (res=0), i=3, num[i]=3 res^=3 res^=3 (res = 0), i=4, num[i]=5 res ^= 4 (res = 4) res ^= 5 (res = 1). After loop res ^= num.length res ^= 5 (res = 4). This happens because whenever two same elements got xor it will be 0 so that's why we xor the index and number so we find the inverse of number and when we xor with length it will return the missing number in that range.",
     "code": "class Solution:\n    def miss(self, nums: list[int]) -> int:\n        res = 0\n        for i, elem in enumerate(nums):\n            res ^= i\n            res ^= elem\n        res ^= len(nums)\n        return res"
   },
@@ -248,6 +312,12 @@
       "It is very easy to come up with a solution with a runtime of O(n log n). Can you do it in linear time O(n) and possibly in a single pass?",
       "Can you do it without using any built-in function (i.e., like __builtin_popcount in C++)?"
     ],
+    "hints": [
+      "This one is little tricky because it includes DP concept (memoization). Try to utilize the previous calculated result with new ones.",
+      "Try to utilize the number calculated from previous by seperating into ranges like [2-3],[4-7] as bits increasing in each range. For each bit it increases in 2 and it's power so do the right shift to utilize the previous result",
+      "Finally odd or even number. DO the mod operation to find the remaining bits."
+    ],
+    "pseudocode": "res -> ArrayOfSize(n)\n    for num -> 0 to n+1\n      res[num] = res[num>>1] + i % 2\n    return res",
     "explanation": "This one is little tricky because it includes DP concept (memoization). Try to utilize the previous calculated result with new ones. Try to utilize the number calculated from previous by seperating into ranges like [2-3],[4-7] as bits increasing in each range. For each bit it increases in 2 and it's power so do the right shift to utilize the previous result Finally odd or even number. DO the mod operation to find the remaining bits.",
     "code": "class Solution:\n    def cnt(self, x: int) -> int:\n        x = (x & (0x55555555)) + ((x >> 1) & (0x55555555))\n        x = (x & (0x33333333)) + ((x >> 2) & (0x33333333))\n        x = (x & (0x0f0f0f0f)) + ((x >> 4) & (0x0f0f0f0f))\n        x = (x & (0x00ff00ff)) + ((x >> 8) & (0x00ff00ff))\n        x = (x & (0x0000ffff)) + ((x >> 16) & (0x0000ffff))\n        return x\n    def counting(self, n: int) -> list[int]:\n        res = []\n        x = 0\n        for i in range(n+1):\n            x = (i & (0x55555555)) + ((i >> 1) & (0x55555555))\n            x = (x & (0x33333333)) + ((x >> 2) & (0x33333333))\n            x = (x & (0x0f0f0f0f)) + ((x >> 4) & (0x0f0f0f0f))\n            x = (x & (0x00ff00ff)) + ((x >> 8) & (0x00ff00ff))\n            x = (x & (0x0000ffff)) + ((x >> 16) & (0x0000ffff))\n            res.append(x)\n            x = 0\n        return res \n    def solution2(self, n):\n        res = [0]*(n+1)\n        for i in range(n+1):\n            res[i] = res[i >> 1] + i % 2\n        return res"
   },
@@ -264,6 +334,10 @@
     "constraints": [
       "1 <= n <= 45"
     ],
+    "hints": [
+      "This one is very easy just think the output of certain inputs and identify the patterns will hekp you to solve this problem that's all."
+    ],
+    "pseudocode": "one -> 1\n    two -> 1\n    for i -> 1 to n - 1\n      temp -> one\n      one -> one + two\n      two -> temp\n    return one",
     "explanation": "This one is very easy just think the output of certain inputs and identify the patterns will hekp you to solve this problem that's all.",
     "code": "class Solution:\n    def climbStairs(self, n: int) -> int:\n        one, two = 1, 1\n        for i in range(n - 1):\n            temp = one\n            one = one + two\n            two = temp\n        return one"
   },
@@ -283,6 +357,11 @@
       "1 <= coins[i] <= 2^31 - 1",
       "0 <= amount <= 10^4"
     ],
+    "hints": [
+      "Try to solve it using BreadFirst search approach with Dynammic programming.",
+      "Iterate in range of amount + 1 and in each iteration minus it with each coin in arr if it is greater than or equal 0 then store it in dp by checking currmin and currvar amount."
+    ],
+    "pseudocode": "dp -> arr.lenOf(amount+1).fillWith(amount + 1)\n    dp[0] -> 0\n    for am -> 0 to amount+1\n      for each coin in coins\n        if am - coin greaterThanOrEqual 0\n          dp[am] -> if dp[am] isLessThan 1 + dp[am - coin] ? dp[am] : 1 + dp[am - coin]\n    return if dp[amount] != amount + 1 ? dp[amount] : -1",
     "explanation": "Try to solve it using BreadFirst search approach with Dynammic programming. Iterate in range of amount + 1 and in each iteration minus it with each coin in arr if it is greater than or equal 0 then store it in dp by checking currmin and currvar amount.",
     "code": "class Solution:\n    def cost(self, coins: list[int], amount: int) -> int:\n        dp = [amount + 1] * (amount + 1)\n        dp[0] = 0\n        for a in range(1, amount + 1):\n            for c in coins:\n                if a - c >= 0:\n                    dp[a] = min(dp[a], 1 + dp[a-c])\n        return dp[amount] if dp[amount] != amount+1 else -1"
   },
@@ -301,6 +380,10 @@
       "1 <= nums.length <= 2500",
       "10^4 <= nums[i] <= 10^4"
     ],
+    "hints": [
+      "Use the brute force way to solve it in O(n^2) complexity. By using additional array of size n to keep track of."
+    ],
+    "pseudocode": "maxLength -> 1\n    lenList -> Array.ofSize(nums.length).fill(1)\n    for i -> nums.length - 1 to 0\n      for j -> i + 1 to nums.length\n        if nums[i] isLessThan nums[j] then\n          lenList[i] -> if lenList[i] isGreaterThan 1 + lenList[j] ? lenList[i] : lenList[j]\n          maxLength -> if lenList[i] is GreaterThan  maxLength ? lenList[i] : maxLength\n    return maxLength",
     "explanation": "Use the brute force way to solve it in O(n^2) complexity. By using additional array of size n to keep track of.",
     "code": "class Solution:\n    def lengthOfLIS(self, nums: list[int]) -> int:\n        maxLen = 1\n        LenLis = [1] * len(nums)\n        for i in range(len(nums) - 1, -1, -1):\n            for j in range(i+1, len(nums)):\n                if nums[i] < nums[j]:\n                    LenLis[i] = max(LenLis[i], 1 + LenLis[j])\n                    maxLen = max(maxLen, LenLis[i])                \n        return maxLen"
   },
@@ -319,6 +402,11 @@
       "1 <= text1.length, text2.length <= 1000",
       "text1 and text2 consist of only lowercase English characters."
     ],
+    "hints": [
+      "Use the bottom up approach in DP. with 2D array. Time Complexity is O(n *m) where n is length of text1, m is the length of text2. Store the maximum of each row + 1 and col + 1 beacuse whether we choose that element or not.",
+      "In each iteration maximum of col + 1 and row + 1 if text1[row] != text2[col] else store 1 + the value in dp at row + 1 and col + 1."
+    ],
+    "pseudocode": "dp -> Array.lengthOf(text1.length, forEachindex Array.lengthOf(text2.length))\n    for row -> text1.length - 1 to 0\n      for col -> text2.length - 1 to 0\n        if text1[row].equals(text2[col]) then\n          dp[row][col] -> 1 + dp[row + 1][col + 1]\n        else\n          dp[row][col] -> if dp[row][col + 1] isGreaterThan dp[row + 1][col] ? dp[row][col + 1] : dp[row + 1][col]\n    return dp[0][0]",
     "explanation": "Use the bottom up approach in DP. with 2D array. Time Complexity is O(n *m) where n is length of text1, m is the length of text2. Store the maximum of each row + 1 and col + 1 beacuse whether we choose that element or not. In each iteration maximum of col + 1 and row + 1 if text1[row] != text2[col] else store 1 + the value in dp at row + 1 and col + 1.",
     "code": "class Solution:\n    def subsequence(self, text1: str, text2: str) -> int:\n        dp = [[0 for j in range(len(text2) + 1)] for i in range(len(text1) + 1)]\n        # TC : O(n * m)same memory conplexity\n        for i in range(len(text1) - 1, -1, -1):\n            for j in range(len(text2) - 1, -1, -1):\n                if text1[i] == text2[j]:\n                    dp[i][j] = 1 + dp[i + 1][j + 1]\n                else:\n                    dp[i][j] = max(dp[i][j + 1], dp[i + 1][j])\n        return dp[0][0]"
   },
@@ -340,6 +428,11 @@
       "s and wordDict[i] consist of only lowercase English letters.",
       "All the strings of wordDict are unique."
     ],
+    "hints": [
+      "Make the array with length of s + 1 which stores boolean values either true of false. if the string and worddict array satisfies the condition return true or false.",
+      "The condition is if idx + length of the word lessthan length of string and s[idx to idx + length of word] == word means then arrat[idx] = array[idx to idx + length of word]. finally return array[0]"
+    ],
+    "pseudocode": "dp -> Array.ofLength(s.length() + 1).fill(false)\n    dp[s.length()] -> true\n    for i -> 1 to s.length()\n      if (i + word.length()) lessThanOrEqual s.length() and s[i to i + word.length()] equals word\n        dp[i] = dp[i + word.length()]\n      if dp[i]\n        break\n    return dp[0]",
     "explanation": "Make the array with length of s + 1 which stores boolean values either true of false. if the string and worddict array satisfies the condition return true or false. The condition is if idx + length of the word lessthan length of string and s[idx to idx + length of word] == word means then arrat[idx] = array[idx to idx + length of word]. finally return array[0]",
     "code": "class Solution:\n    def wordBreak(self, s: str, wordDict: list[str]) -> bool:\n        dp = [False] * (len(s) + 1)\n        dp[len(s)] = True\n        for i in range(len(s) - 1, -1, -1):\n            for word in wordDict:\n                if (i + len(word)) <= len(s) and s[i: i + len(word)] == word:\n                    dp[i] = dp[i + len(word)]\n                if dp[i]:\n                    break\n        return dp[0]"
   },
@@ -360,6 +453,11 @@
       "All elements of candidates are distinct.",
       "1 <= target <= 40"
     ],
+    "hints": [
+      "Guaranteed every elements are unique. We can use the same element n times to get the target try to solve it in backtracking approach. I suggest you to draw the tree for each decision will make it easy.",
+      "If you use tree structure like (for ex: [2,3,6,7]) we can either choose 2 or not to choose if we choose 2 again we can choose 2 or 3. After completed tree structure you can analyze it with how we can use recursion on it with base condition and result target condition."
+    ],
+    "pseudocode": "backtrack(i, total, dp, res, nums)\n      if total == target then //result condition\n        if dp isIn res then\n          return\n        res.add(dp)\n      if i == nums.length then return // another edge condition\n      if total + nums[i] <= target then\n        total -> total + nums[i]\n        dp.add(nums[i])\n        backtrack(i, total, dp, res, nums) // can choose same element\n        toMinus -> dp.pop()\n        total -> total - toMinus\n      backtrack(i + 1, total, dp, res, nums) // can choose different element\n    mainfunc() //nums input array\n      dp -> Array(int)\n      res -> Array(Array(int))\n      backtrack(0, 0, dp, res, nums)\n      return res",
     "explanation": "Guaranteed every elements are unique. We can use the same element n times to get the target try to solve it in backtracking approach. I suggest you to draw the tree for each decision will make it easy. If you use tree structure like (for ex: [2,3,6,7]) we can either choose 2 or not to choose if we choose 2 again we can choose 2 or 3. After completed tree structure you can analyze it with how we can use recursion on it with base condition and result target condition.",
     "code": "class Solution:\n    def combine(self, nums: list[int], target: int) -> list[list[int]]:\n        dp = []\n        res = []\n        def backtrack(i, total):\n            if total == target:\n                if dp in res:\n                    return\n                res.append(dp.copy())\n                return\n            if i == len(nums):\n                return\n            if total + nums[i] <= target:\n                total += nums[i]\n                dp.append(nums[i])\n                backtrack(i, total)\n                tomin = dp.pop()\n                total -= tomin\n            backtrack(i+1, total)\n        backtrack(0,0)\n        return res"
   },
@@ -377,6 +475,11 @@
       "1 <= nums.length <= 100",
       "0 <= nums[i] <= 400"
     ],
+    "hints": [
+      "You can't rob adjacent houses. Simply it indicates that the odd or even index array items which of them is maximum will get return as the maximum amount of money that robber can rob.",
+      "Add the element at index position to the variable and use another variable store maximum of it in another variable. Swap all."
+    ],
+    "pseudocode": "rob1 -> 0\n    rob2 -> 0\n    for each number in nums\n      temp -> number + rob1 > rob2 ? number + rob1 : rob2\n      rob1 -> rob2\n      rob2 -> temp\n    return rob2",
     "explanation": "You can't rob adjacent houses. Simply it indicates that the odd or even index array items which of them is maximum will get return as the maximum amount of money that robber can rob. Add the element at index position to the variable and use another variable store maximum of it in another variable. Swap all.",
     "code": "class Solution:\n    def rob(self, nums: list[int]) -> int:\n        rob1, rob2 = 0, 0\n\n        # [rob1 , rob2, n, n+1, ....]\n        for n in nums:\n            temp = max(n + rob1, rob2)\n            rob1 = rob2\n            rob2 = temp\n        return rob2"
   },
@@ -395,6 +498,11 @@
       "1 <= nums.length <= 100",
       "0 <= nums[i] <= 1000"
     ],
+    "hints": [
+      "Previous House Robber is similar to this problem only difference is the houses are in rounded order. Just a little modification.",
+      "If you rob house 1, you cannot rob house n and if you rob for house 2, you can rob house n. Range is house 1 to house n-1 or house 2 to house n."
+    ],
+    "pseudocode": "rob1 -> 0\n    rob2 -> 0\n    rob3 -> 0\n    rob4 -> 0\n    for i -> 1 to nums.length - 1\n      temp -> if nums[i] + rob1 > rob2 ? nums[i] + rob1 : rob2\n      temp2 -> if nums[i + 1] + rob3 > rob4 ? nums[i] + rob3 : rob4\n      rob1 -> rob2\n      rob2 -> temp\n      rob3 -> rob4\n      rob4 -> temp2\n    res -> if nums[0] > rob4 ? (if nums[0] > rob2 ? nums[0] : rob2) : rob4\n    return res",
     "explanation": "Previous House Robber is similar to this problem only difference is the houses are in rounded order. Just a little modification. If you rob house 1, you cannot rob house n and if you rob for house 2, you can rob house n. Range is house 1 to house n-1 or house 2 to house n.",
     "code": "class Solution:\n    def rob(self, nums: list[int]) -> int:\n        rob1, rob2 = 0, 0\n        r3, r4 = 0, 0\n        for i in range(len(nums) - 1):\n            temp = max(nums[i] + rob1, rob2)\n            t2 = max(nums[i + 1] + r3, r4)\n            rob1 = rob2\n            rob2 = temp\n            r3 = r4\n            r4 = t2\n        res = max(nums[0], r4, rob2) # edge case\n        return res"
   },
@@ -413,6 +521,11 @@
       "1 <= s.length <= 100",
       "s contains only digits and may contain leading zero(s)."
     ],
+    "hints": [
+      "Use memoization concept. Initiate dp with s.length and its value to 1. Else DFS, but anyway you have to use memoization.",
+      "If char at s is 0 then make the dp[i] = 0 else dp[i] = dp[i + 1]. And also check i th char is 1 or i th char is 2 then i + 1 th char should be 0-6 then dp[i] += dp[i + 2]. return dp[0]."
+    ],
+    "pseudocode": "dp -> { s.length : 1 }\n    for i -> s.length - 1 to 0\n      if characterIn s at i th position equals \"0\"\n        dp[i] -> 0\n      else\n        dp[i] -> dp[i + 1]\n      if i + 1 is lessThan s.length and charIn s at i th position equals \"1\" or charIn s at i th position equals \"2\" and charIn s at i + 1 th postion in \"0123456\"\n        dp[i] -> dp[i] + dp[i + 2]\n      return dp[0]",
     "explanation": "Use memoization concept. Initiate dp with s.length and its value to 1. Else DFS, but anyway you have to use memoization. If char at s is 0 then make the dp[i] = 0 else dp[i] = dp[i + 1]. And also check i th char is 1 or i th char is 2 then i + 1 th char should be 0-6 then dp[i] += dp[i + 2]. return dp[0].",
     "code": "class Solution:\n    def decoded(self, s: str) -> int:\n        dp = { len(s) : 1 }\n        def dfs(i):\n            if i in dp:\n                return dp[i]\n            if s[i]  == \"0\":\n                return 0\n            res = dfs(i+1)\n            if (i+1 < len(s) and (s[i] == \"1\" or s[i] == \"2\" and s[i+1] in \"0123456\")):\n                res += dfs(i+2)\n            dp[i] = res\n            return res\n        return dfs(0)\n    def seecondApproach(self, s) :\n        dp = { len(s) : 1 }\n        for i in range(len(s) - 1, -1, -1):\n            if s[i] == \"0\":\n                dp[i] = 0\n            else:\n                dp[i] = dp[i+1]\n            if (i + 1 < len(s) and (s[i] == \"1\" or s[i] == \"2\" and s[i+1] in \"0123456\")):\n                dp[i] += dp[i + 2]\n        return dp[0]"
   },
@@ -429,6 +542,11 @@
     "constraints": [
       "1 <= m, n <= 100"
     ],
+    "hints": [
+      "There are m rows and n columns. We have to find a number of paths from 1st row and 1st col to mth row and nth col. If you draw the ways from 2row 2col by increase one by one you can see the pattern of it. Yes you could do it in recursion it is so easy, but it is not optimized if you debug the recursion program you can see why it is happening but you can use memoization in it.",
+      "Instead of memoization in recursion, you can done with loops with a time complexity of O(m * n) by iterating each row and column. If row or column equals 0 then matrix[row][column] = 0 else matrix[row][column] = matrix[row - 1][column] + matrix[row][column - 1]."
+    ],
+    "pseudocode": "matrix -> ArrayOfSize(m'row, n'col)\n    for row -> 1 to m\n      for column -> 1 to n\n        if row equals 0 or column equals 0 then\n          matrix[row][column] = 1\n          continue\n        matrix[row][column] = matrix[row - 1][column] + matrix[row][column - 1]\n    return matrix",
     "explanation": "There are m rows and n columns. We have to find a number of paths from 1st row and 1st col to mth row and nth col. If you draw the ways from 2row 2col by increase one by one you can see the pattern of it. Yes you could do it in recursion it is so easy, but it is not optimized if you debug the recursion program you can see why it is happening but you can use memoization in it. Instead of memoization in recursion, you can done with loops with a time complexity of O(m * n) by iterating each row and column. If row or column equals 0 then matrix[row][column] = 0 else matrix[row][column] = matrix[row - 1][column] + matrix[row][column - 1].",
     "code": "class Solution:\n    def uniquePaths(self, m: int, n: int) -> int:\n        def recurse(n,m):\n            if n == 1 or m == 1:\n                return 1\n            else:\n                return recurse(n - 1, m) + recurse(n, m - 1)\n        res = recurse(n,m)\n        return res\n    # got the base case now to optimize it because it takes too much fo time to complete"
   },
@@ -446,6 +564,11 @@
       "1 <= nums.length <= 10^4",
       "0 <= nums[i] <= 10^5"
     ],
+    "hints": [
+      "It is one of easiest Dynamic programming problem. It is easy to come up with linear solution. Try to use bottom up approach, Iterate array in reverse, start from goal.",
+      "Set the goal to nums.length - 1 and if index + current number at index greater than goal set the goal to that index. If goal equals 0 then return true else false."
+    ],
+    "pseudocode": "length -> nums.length\n    goal -> length - 1\n    for index -> length - 1 to 0\n      if index + nums[index] greaterThanOrEqual goal then goal = index\n    if goal equals 0 then return true else false",
     "explanation": "It is one of easiest Dynamic programming problem. It is easy to come up with linear solution. Try to use bottom up approach, Iterate array in reverse, start from goal. Set the goal to nums.length - 1 and if index + current number at index greater than goal set the goal to that index. If goal equals 0 then return true else false.",
     "code": "class Solution:\n    def jumpGame(self, nums: list[int]) -> bool:\n        goal = len(nums) - 1\n        for i in range(len(nums) - 1, -1, -1):\n            if i + nums[i] >= goal:\n                goal = i\n        return True if goal == 0 else False"
   },
@@ -465,6 +588,11 @@
       "1 <= m, n <= 300",
       "grid[i][j] is '0' or '1'."
     ],
+    "hints": [
+      "Usual DFS algorithm for 2D matrix for prev row & col, next row & col",
+      "Think about the base case for row & col index. And no recursion need for element which is '0' or already visited. Keep track of visited place."
+    ],
+    "pseudocode": "",
     "explanation": "Usual DFS algorithm for 2D matrix for prev row & col, next row & col Think about the base case for row & col index. And no recursion need for element which is '0' or already visited. Keep track of visited place.",
     "code": "class Solution:\n    def while_it_has_neighbors(self, grid, row, col, ROW, COL, is_visited):\n        if (row < 0 or col < 0 or row == ROW or col == COL):\n            return\n        if (grid[row][col] == '0' or is_visited[row][col]):\n            is_visited[row][col] = True\n            return\n        is_visited[row][col] = True\n        self.while_it_has_neighbors(grid, row - 1, col, ROW, COL, is_visited)\n        self.while_it_has_neighbors(grid, row, col + 1, ROW, COL, is_visited)\n        self.while_it_has_neighbors(grid, row + 1, col, ROW, COL, is_visited)\n        self.while_it_has_neighbors(grid, row, col - 1, ROW, COL, is_visited)\n        return\n\n    def numIslands(self, grid: List[List[str]]) -> int:\n        ROW, COL = len(grid), len(grid[0])\n        res = 0\n        is_visited = [[False for _ in range(COL)] for _ in range(ROW)]\n        for row in range(ROW):\n            for col in range(COL):\n                if (grid[row][col] == '0' or is_visited[row][col]):\n                    is_visited[row][col] = True\n                    continue\n                else:\n                    self.while_it_has_neighbors(grid, row, col, ROW, COL, is_visited)\n                    res += 1\n        return res"
   },
@@ -486,6 +614,8 @@
       "newInterval.length == 2",
       "0 <= start <= end <= 10^5"
     ],
+    "hints": [],
+    "pseudocode": "result -> array()\n    for i -> 1 to lengthOf(intervals)\n      if newInterval equals null or intervals[i][1] < newInterval[0] result.add(intervals[i]\n      else if intervals[i][0] > newInterval[1] \n        result.add(newInterval)\n        result.add(intervals[i])\n        newInterval = null\n      else \n        newInterval[0] = minimum(intervals[i][0], newInterval[0])\n        newInterval[1] = maximum(intervals[i][1], newInterval[1])\n\n    if newInterval notEqualTo null then result.add(newInterval)\n    return result",
     "explanation": "Use optimal algorithm approach.",
     "code": "class Solution:\n    def insertInterval(self, interval: list[list[int]], newInterval: list[int]) -> list[list[int]]:\n        result = []\n        for i in range(len(interval)):\n            if newInterval[1] < interval[i][0]:\n                result.append(newInterval)\n                return result + interval[i:]\n            elif newInterval[0] > interval[i][1]:\n                result.append(interval[i])\n            else:\n                newInterval[0] = min(newInterval[0], interval[i][0])\n                newInterval[1] = max(newInterval[1], interval[i][1])\n        result.append(newInterval)\n        return result"
   },
@@ -504,6 +634,8 @@
       "intervals[i].length == 2",
       "0 <= starti <= endi <= 10*4"
     ],
+    "hints": [],
+    "pseudocode": "intervals -> intervals.sort()\n    merged -> list()\n    for each interval in intervals\n      if merged.isEmpty() or merged.lastELemments(1) isLessThan interval.at(0)\n        merged.add(intervals)\n      else\n        merged.getLast(1) -> maximum(merged.getLast(1), interval.at(1))\n    return merged.toArray()",
     "explanation": "Use optimal algorithm approach.",
     "code": "class Solution:\n    def merge(self, intervals: list[list[int]]) -> list[list[int]]:\n        intervals.sort(key = lambda i : i[0])\n        result = [intervals[0]]\n        for start, end in intervals[1:]:\n            lastEnd = result[-1][1]\n            if start <= lastEnd:\n                result[-1][1] = max(lastEnd, end)\n            else:\n                result.append([start, end])\n        return result"
   },
@@ -523,6 +655,10 @@
       "intervals[i].length == 2",
       "5 * 104 <= starti < endi <= 5 * 10^4"
     ],
+    "hints": [
+      "Sort it and keep track of previous end of every interval if it is less than or equal to current start then change previous end else takes the minimum of previous end and make the result + 1. Finally return the result."
+    ],
+    "pseudocode": "sort(intervals)\n    result -> 0\n    previousEnd -> intervals.at([0][1])\n    for i -> 1 to intervals.length\n      start -> intervals.at([i][0]), end -> intervals.at([i][1])\n      if start greaterThanOrEqualTo previousEnd\n        previousEnd -> end\n      else\n        result -> result + 1\n        previousEnd -> minimum(previousEnd, end)\n    return result",
     "explanation": "Sort it and keep track of previous end of every interval if it is less than or equal to current start then change previous end else takes the minimum of previous end and make the result + 1. Finally return the result.",
     "code": "class Solution:\n    def nonOverLap(self, intervals: list[list[int]]) -> int:\n        intervals.sort()\n        result = 0\n        prevEnd = intervals[0][1]\n        for start, end in intervals[1:]:\n            if start >= prevEnd:\n                prevEnd = end\n            else:\n                result += 1\n                prevEnd = min(end, prevEnd)\n        return result"
   },
@@ -541,6 +677,10 @@
       "The number of nodes in the list is the range [0, 5000].",
       "5000 <= Node.val <= 5000"
     ],
+    "hints": [
+      "Just break the link and shift the pointers in loop, prev, curr, nxt makes nxt equals to curr's next and curr's next points to prev now prev equals curr curr equals nxt. If recursion makes the head next's points to the head and makes head's next to none."
+    ],
+    "pseudocode": "loop :\n      prev -> none, curr -> head\n      while curr\n        nxt -> curr.next\n        curr.next -> prev\n        prev -> curr\n        curr -> nxt\n      return prev\n    recursion :\n      if head is null or head.next is null then return head\n      node -> recurse(head.next)\n      head.next.next -> head\n      head.next -> none\n      return node",
     "explanation": "Just break the link and shift the pointers in loop, prev, curr, nxt makes nxt equals to curr's next and curr's next points to prev now prev equals curr curr equals nxt. If recursion makes the head next's points to the head and makes head's next to none.",
     "code": "# Reverse Linked List - leetcode 206\n# 1->2->3->4->5->NULL ; input -> ouput: 5->4->3->2->1->NULL\nclass ListNode:\n    def __init__(self, val = 0, nexty=None):\n        self.val = val\n        self.nexty = nexty\n\nclass Solution:\n    def reverseList(self, head: ListNode) -> ListNode:\n        prev, curr = None, head\n# T: O(n), M(1) : iterative\n# T: O(n), M(n) : recursive\n        while curr:\n            nxt = curr.nexty\n            curr.nexty = prev\n            prev = curr\n            curr = nxt\n        \n        return prev\n\n    def recurse(self, head: ListNode) -> ListNode:\n        if not head:\n            return None\n        newHead = head\n        if head.nexty:\n            newHead = self.recurse(head.nexty)\n            head.nexty.nexty = head\n        head.nexty = None\n\n        return newHead"
   },
@@ -560,6 +700,10 @@
       "105 <= Node.val <= 105",
       "pos is -1 or a valid index in the linked-list."
     ],
+    "hints": [
+      "Use the two pointer approach, but in a slightly different way. Study about fast pointer and slow pointer concept and implement it."
+    ],
+    "pseudocode": "ListNode slow = head\n    ListNode fast = head\n    while fast not equal null and fast.next not equal null\n      slow -> slow.next\n      fast -> fast.next.next\n      if slow equals fast\n        return true\n    return false",
     "explanation": "Use the two pointer approach, but in a slightly different way. Study about fast pointer and slow pointer concept and implement it.",
     "code": "class Solution:\n    def hasCycle(self, head: ListNode) -> bool:\n        if not head or not head.next:\n            return False\n        l, r = head, head\n        while r and r.next:\n            l = l.next\n            r = r.next.next\n            if l == r:\n                return True\n        return False\n# e1 = ListNode(-4)\n# e2 = ListNode(0, e1)\ne3 = ListNode(2)\ne4 = ListNode(1, e3)\ne3.next = e4"
   },
@@ -579,6 +723,10 @@
       "100 <= Node.val <= 100",
       "Both list1 and list2 are sorted in non-decreasing order."
     ],
+    "hints": [
+      "Use the merge sort approach create an empty node and make the next smallest element."
+    ],
+    "pseudocode": "dummy -> ListNode()\n    tail -> dummy\n    while l1 not equals null and l2 not equals null\n      if l1.val isLessThan l2.val\n        tail.next -> l1\n        l1 -> l1.next\n      else\n        tail.next -> l2\n        l2 -> l2.next\n    if l1 not equals null\n      tail.next -> l1\n    else if l2 not equals null\n      tail.next -> l2\n    return dummy.next",
     "explanation": "Use the merge sort approach create an empty node and make the next smallest element.",
     "code": "class Solution:\n    def hasCycle(self, head: ListNode) -> bool:\n        dummy = ListNode()\n        tail = dummy\n\n        while l1 and l2:\n            if l1.val < l2.val:\n                tail.next = l1\n                l1 = l1.next\n            else:\n                tail.next = l2\n                l2 = l2.next\n            tail = tail.next\n\n        if l1:\n            tail.next = l1\n        elif l2:\n            tail.next = l2        \n        return dummy.next"
   },
@@ -599,6 +747,10 @@
       "0 <= Node.val <= 100",
       "1 <= n <= sz"
     ],
+    "hints": [
+      "The same two pointer technique also keep track of length of nodes."
+    ],
+    "pseudocode": "dummy -> ListNode()\n    l -> dummy\n    r -> head\n    while n greaterThan 0 and r not equal null\n      r -> r.next\n      n -> n - 1\n    while r not equal null\n      l -> l.next\n      r -> r.next\n    l.next -> l.next.next\n    return dummy.next",
     "explanation": "The same two pointer technique also keep track of length of nodes.",
     "code": "class ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\nclass Solution:\n    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:\n        dummy = ListNode(0, head)\n        l = dummy\n        # dummy.next = head\n        r = head\n        while n > 0 and r:\n            r = r.next\n            n -= 1\n        while r:\n            l = l.next\n            r = r.next\n        l.next = l.next.next\n        return dummy.next"
   },
@@ -616,6 +768,10 @@
       "The number of nodes in the list is in the range [1, 5 * 104].",
       "1 <= Node.val <= 1000"
     ],
+    "hints": [
+      "Use the slow pointer and fast pointer approach by reversing the second half and merge it with the first half from the second node."
+    ],
+    "pseudocode": "ListNode slow -> head\n    ListNOde fast -> head.next\n    while fast not equal null and fast.next not equal null\n      slow -> slow.next\n      fast -> fast.next.next\n    ListNode second -> slow.next\n    ListNode prev -> second.next -> null\n    while second not equal null\n      ListNode tmp -> second.next\n      second.next -> prev\n      prev -> second\n      second -> tmp\n    ListNode first -> head\n    second -> prev\n    while second not equal null\n      ListNode tmp1 -> first.next\n      ListNode tmp2 -> second.next\n      first.next -> second\n      second.next -> tmp1\n      first -> tmp1\n      second-> tmpp2",
     "explanation": "Use the slow pointer and fast pointer approach by reversing the second half and merge it with the first half from the second node.",
     "code": "class ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\nclass Solution3:\n    # reverse and merge slow and fast pointer\n    def solve(self, head: ListNode) -> None:\n        slow, fast = head, head.next\n        while fast and fast.next:\n            slow = slow.next\n            fast = fast.next.next\n        second = slow.next\n        prev = slow.next = None\n        while second:\n            tmp = second.next\n            second.next = prev\n            prev = second\n            second = tmp\n        first, second = head, prev\n        while second:\n            tmp1, tmp2 = first.next, second.next\n            first.next = second\n            second.next = tmp1\n            first, second = tmp1, tmp2\n        res = head\n        while res:\n            print(res.val)\n            res= res.next\n\nl10 = ListNode(10)\nl9 = ListNode(9, l10)\nl8 = ListNode(8, l9)\nl7 = ListNode(7, l8)\nl6 = ListNode(6, l7)\nl5 = ListNode(5, l6)\nl4 = ListNode(4, l5)\nl3 = ListNode(3, l4)\nl2 = ListNode(2, l3)\nl1 = ListNode(1, l2)\nprint(Solution3().solve(l1))"
   },
@@ -634,6 +790,11 @@
       "0 <= s.length <= 5 * 10^4",
       "s consists of English letters, digits, symbols and spaces."
     ],
+    "hints": [
+      "Use of both Hashtabla and sliding window will make it easy. And also have another pointer to keep track of length of window.",
+      "Check hastable if character exists if not then max the result or else if string at index is less than l pointer then max the result else make l to last occurence of s at index."
+    ],
+    "pseudocode": "exists -> hashtable()\n    l -> 0\n    res -> 0\n    for r -> 0 to s.length\n      if s.atIndex(r) not in hashtable.keys() then res -> maximum(res, r - l + 1)\n      else\n        if hashtable[s.atIndex(r)] is lessThan l then res -> maximum(res, r- l + 1)\n        else\n          l -> hashtable[s.atIndex(r)]\n    return res",
     "explanation": "Use of both Hashtabla and sliding window will make it easy. And also have another pointer to keep track of length of window. Check hastable if character exists if not then max the result or else if string at index is less than l pointer then max the result else make l to last occurence of s at index.",
     "code": "class Solution:\n    def lengthOfLongestSubstring(self, s: str) -> int:\n        subString = {}\n        maxLen = 0\n        curLen = 0\n        l=0\n        repeat = 0\n        while l < len(s):\n            if s[l] in subString:\n                if subString[s[l]] < repeat:\n                    subString[s[l]] = l\n                    curLen = (l - repeat) + 1\n                    maxLen = max(maxLen, curLen)\n                    l += 1\n                    continue\n                repeat = max(repeat, subString[s[l]])\n                subString[s[l]] = l\n                curLen = l - repeat\n                maxLen = max(maxLen, curLen)\n                l += 1\n                repeat += 1\n                continue\n            subString[s[l]] = l\n            curLen = (l - repeat) + 1\n            maxLen = max(maxLen, curLen)\n            l += 1\n        return maxLen\n    def solution2(self, s: str) -> int:\n        exists = {}\n        l = 0\n        res = 0\n        for r in range(len(s)):\n            if s[r] not in exists:\n                res = max(res, r - l + 1)\n            else:\n                if exists[s[r]] < l:\n                    res = max(res, r - l + 1)\n                else:\n                    l = exists[s[r]] + 1\n            exists[s[r]] = r\n        return res"
   },
@@ -652,6 +813,11 @@
       "s consists of only uppercase English letters.",
       "0 <= k <= s.length"
     ],
+    "hints": [
+      "Similar to longest substring without repeating character can use sliding window and hashtable in similar order to obtain the result.",
+      "Frequency of letter and letter as key value in hashtable calculate maxfrequency at each iteration. if window length - maxfrequency greater than K then reduce the size of window also keep track of maximum size of window in result."
+    ],
+    "pseudocode": "count -> {}\n    res -> 0\n    l -> 0\n    maxFrequency -> 0\n    for r -> 1 to s.length()\n      count[s[r]] -> if count.get(s[r]) exists then count.get(s[r]) else 0\n      maxFrequency -> if maxFrequency > count[s[r]] then maxFrequency else count[s[r]]\n      while r - l + 1 - maxFrequency > k then\n        count[s[l]] -> count.get(s[l]) - 1\n        l -> l + 1\n      res -> if res > r - l + 1 then res else r - l + 1\n    return res",
     "explanation": "Similar to longest substring without repeating character can use sliding window and hashtable in similar order to obtain the result. Frequency of letter and letter as key value in hashtable calculate maxfrequency at each iteration. if window length - maxfrequency greater than K then reduce the size of window also keep track of maximum size of window in result.",
     "code": "class Solution:\n    def characterReplacement(self, s: str, k: int) -> int:\n        count = {}\n        res = 0\n        l = 0\n        maxFreq = 0\n        for r in range(len(s)):\n            count[s[r]] = 1 + count.get(s[r], 0)\n            maxFreq = max(maxFreq, count[s[r]])\n            \n            while (r - l + 1) - maxFreq > k:\n                count[s[l]] -= 1\n                l += 1\n            res = max(res, r - l + 1)\n        return res"
   },
@@ -672,6 +838,11 @@
       "1 <= m, n <= 10^5",
       "s and t consist of uppercase and lowercase English letters."
     ],
+    "hints": [
+      "By the two pointer method create the window which has the length of t and increase the right pointer to expand the size of window to cover all the letters in t.",
+      "Shrink left and expand right to get the minimum possible length of window and return the window String."
+    ],
+    "pseudocode": "",
     "explanation": "By the two pointer method create the window which has the length of t and increase the right pointer to expand the size of window to cover all the letters in t. Shrink left and expand right to get the minimum possible length of window and return the window String.",
     "code": "class Solution:\n    def minWindow(self, s: str, t: str) -> str:\n        if t == \"\": return \"\"\n        countT, window = {}, {}\n        res, resLen = [-1,-1], float(\"inf\")\n        l = 0\n        for c in t:\n            countT[c] = 1 + countT.get(c, 0)\n        have, need = 0, len(countT)\n\n        for r in range(len(s)):\n            c = s[r]\n            window[c] = 1 + window.get(c, 0)\n            if c in countT and window[c] == countT[c]:\n                have += 1\n            while have == need:\n                # update our result\n                if (r - l + 1) < resLen:\n                    res = [l, r]\n                    resLen = (r - l + 1)\n                # pop from the left \n                window[s[l]] -= 1\n                if s[l] in countT and window[s[l]] < countT[s[l]]:\n                    have -= 1\n                l += 1\n        l, r = res \n        c = \"a\"\n        print(window)\n        return s[l:r + 1] if resLen != float(\"infinity\") else \"\""
   },
@@ -689,6 +860,10 @@
       "1 <= s.length, t.length <= 5 * 10^4",
       "s and t consist of lowercase English letters."
     ],
+    "hints": [
+      "Use the hashmap to identify all the characters in both words have equal occurence. First if length of two strings is different then it won't be anagram so just return false."
+    ],
+    "pseudocode": "if s.length not equals t.length then return false\n    countS -> hashMap(Char, int)\n    countT -> hashMap(Char, int)\n    for i -> 1 to s.length\n      countS[s[i]] -> countS.get(s[i]) > 0 ? 1 + countS.get(s[i]) : 1\n      countT[t[i]] -> countT.get(t[i]) > 0 ? 1 + countT.get(t[i]) : 1\n    for key in countS\n      if countS[key] not equals countT.get(key, 0) then return false\n    return true",
     "explanation": "Use the hashmap to identify all the characters in both words have equal occurence. First if length of two strings is different then it won't be anagram so just return false.",
     "code": "class Solution:\n    def isAnagram(self, s: str, t: str) -> bool:\n        if len(s) != len(t):\n            return False\n        countS, countT = {}, {} # countS gonna count the occurence of each char at the string, same for countT\n        for i in range(len(s)):\n            countS[s[i]] = 1 + countS.get(s[i], 0)\n            countT[t[i]] = 1 + countT.get(t[i], 0)\n        for c in countS:\n            if countS[c] != countT.get(c, 0):\n                return False\n        return True"
   },
@@ -708,6 +883,11 @@
       "0 <= strs[i].length <= 100",
       "strs[i] consists of lowercase English letters."
     ],
+    "hints": [
+      "Use the hashmap. Think what to store as a key will help you to solve this problem easily.",
+      "The hint is if you use the 26 character length string and use as a key it contains the number of character in each word in array and make it for each word in array if the words in array has same characters in different order then it values will be on same key. Finally return it as a list of list of string."
+    ],
+    "pseudocode": "List(List(String)) res\n    if strs.length equals 0 then return res\n    groupAnagram -> Map(String, List(String))\n    for each word in strs\n      count -> integerArray(26)\n      for i -> 1 to word.length \n          count[word[i] - 'a'] += 1\n        key -> ArrayToString(count)\n        groupAnagram.ifKeyDontExist(Make(key, List(String)))\n        groupAnagram.get(key).add(word)\n    res.addAll(groupAnagram.values())\n    resturn res",
     "explanation": "Use the hashmap. Think what to store as a key will help you to solve this problem easily. The hint is if you use the 26 character length string and use as a key it contains the number of character in each word in array and make it for each word in array if the words in array has same characters in different order then it values will be on same key. Finally return it as a list of list of string.",
     "code": "class Solution:\n    def groupAnagrams(self, strs: list[str]) -> list[list[str]]:\n        groupAnagram = collections.defaultdict(list)\n        forIndex = ord('a')\n        for word in strs:\n            count = [0] * 26\n            for ch in word:\n                count[ord(ch) - forIndex] += 1\n            groupAnagram[tuple(count)].append(word)\n        return list(groupAnagram.values())"
   },
@@ -726,6 +906,11 @@
       "1 <= s.length <= 10^4",
       "s consists of parentheses only '()[]{}'."
     ],
+    "hints": [
+      "Use stack, when it is opening bracket push it to the stack and pop when it is the closing bracket and same bracket as opening bracket.",
+      "You can return false it closing bracket didn't match else finally return false if stack length is greater than 0 else return true."
+    ],
+    "pseudocode": "stack -> Stack()\n    for each character in s\n      if character equals \"{\" or \"(\" or \"[\" then stack.push(character)\n      else if stack.length greaterThan 0 and (stackLastPushedElement equals \"{\" and character equals \"}\" or stackLastPushedElement equals \"[\" and character equals \"]\" or stackLastPushedElement equals \"(\" and character equals \")\"\n        stack.pop()\n      else return false\n    if stack.length greaterThan 0 then return false\n    else return true",
     "explanation": "Use stack, when it is opening bracket push it to the stack and pop when it is the closing bracket and same bracket as opening bracket. You can return false it closing bracket didn't match else finally return false if stack length is greater than 0 else return true.",
     "code": "class Solution:\n    def valid(self, s: str) -> bool:\n        stack = []\n        for i in s:\n            if i == \"{\" or i == \"(\" or i == \"[\":\n                stack.append(i)\n            elif len(stack) > 0 and ((stack[len(stack) - 1] == \"{\" and i == \"}\") or (stack[len(stack) - 1] == \"(\" and i == \")\") or (stack[len(stack) - 1] == \"[\" and i == \"]\")):\n                stack.pop()\n            else:\n                return False\n        if len(stack) > 0:\n            return False\n        else:\n            return True"
   },
@@ -744,6 +929,11 @@
       "1 <= s.length <= 2 * 10^5",
       "s consists only of printable ASCII characters."
     ],
+    "hints": [
+      "You can easily solve it in linear time, but only thing is you don't need to consider special character by just reversing string and check it with forward string.",
+      "Use 2 pointer method 1 pointer for forward string and another one is for backward string."
+    ],
+    "pseudocode": "toCheck -> alphanumericCharacteres()\n    forwardStr -> \"\"\n    reversedStr -> \"\"\n    l -> 0\n    r -> s.length()\n    s -> s.toLower()\n    while (l lessThan s.length() and r > -1)\n      if s.charAt[l] in toCheck then forwardStr -> forwardStr + s.charAt[l]\n      if s.charAt[r] in toCheck then reversedStr -> reversedStr + s.charAt[r]\n      l -> l + 1\n      r -> r - 1\n    return true if forwardStr == reversedStr else false",
     "explanation": "You can easily solve it in linear time, but only thing is you don't need to consider special character by just reversing string and check it with forward string. Use 2 pointer method 1 pointer for forward string and another one is for backward string.",
     "code": "class Solution:\n    def isPalindrome(self, s: str) -> bool:\n        toCheck = string.ascii_lowercase + string.digits\n        forwardStr = \"\"\n        reverseStr = \"\"\n        l, r = 0, len(s) - 1\n        s = s.lower()\n        while (l < len(s) and r > -1):\n            if s[l] in toCheck:\n                forwardStr += s[l]\n            if s[r] in toCheck:\n                reverseStr += s[r]\n            l += 1\n            r -= 1\n        return True if forwardStr == reverseStr else False"
   },
@@ -761,6 +951,12 @@
       "1 <= s.length <= 1000",
       "s consist of only digits and English letters."
     ],
+    "hints": [
+      "Use DP approach in memoization. Try t0 use the previously computed palindrome.",
+      "Can also use two pointer approach. By separating loop for odd and even length palindrome.",
+      "For each iteration increase the right pointer and decrease left pointer while both characters are equal and update if the current length of palindrome string is greater than previous one."
+    ],
+    "pseudocode": "res -> \"\"\n    resultLength -> 0\n    for i -> 1 to lengthOf(s)\n      l -> 1, r -> i\n      //for odd length\n      while l greaterThanOrEqualTo 0 and r lessThan lengthOf(s) and s.charAt(l) equals s.charAt(r)\n        if r - l + 1 isGreaterThan resultLength then\n          res -> s.substring(l to r+1)\n          resultLength -> r - l + 1\n        l -> l - 1\n        r -> r - 1\n      //for even length\n      l -> i, r -> i + 1\n      while l greaterThanOrEqualTo 0 and r lessThan lengthOf(s) and s.charAt(l) equals s.charAt(r)\n        if r - l + 1 isGreaterThan resultLength then\n          res -> s.substring(l to r + 1)\n          resultLength -> r - l + 1\n        l -> l - 1\n        r -> r - 1\n    return res",
     "explanation": "Use DP approach in memoization. Try t0 use the previously computed palindrome. Can also use two pointer approach. By separating loop for odd and even length palindrome. For each iteration increase the right pointer and decrease left pointer while both characters are equal and update if the current length of palindrome string is greater than previous one.",
     "code": "class Solution:\n    def longestPalindrome(self, s: str) -> str:\n        res = \"\"\n        resLen = 0\n        for i in range(len(s)):\n            # odd length\n            l, r = i, i\n            while l >= 0 and r < len(s) and s[l] == s[r]:\n                if (r - l + 1) > resLen:\n                    res = s[l:r+1]\n                    resLen = r - l + 1\n                l -= 1\n                r += 1\n            #even length\n            l, r = i, i + 1\n            while l >= 0 and r < len(s) and s[l] == s[r]:\n                if (r - l + 1) > resLen:\n                    res = s[l:r+1]\n                    resLen = r - l + 1\n                l -= 1\n                r += 1\n        return res"
   },
@@ -778,6 +974,10 @@
       "1 <= s.length <= 1000",
       "s consists of lowercase English letters."
     ],
+    "hints": [
+      "Similar to longest palindromic substring. That's all both are literally same."
+    ],
+    "pseudocode": "countPalindrome(l, r, s) {\n      res -> 0\n      while (l greaterThanOrEqualTo 0 and r lessThan lengthOf(s) and s.charAt[l] equals s.charAt[r]\n        res -> res + 1\n        l -> l - 1\n        r -> r + 1\n      return res\n    }\n    isPalindromicSubstring(s) {\n      result -> 0\n      for idx -> 1 to lengthOf(s)\n        result -> result + countPalindrome(idx, idx, s)\n        result -> result + countPalindrome(idx, idx + 1, s)\n      return result\n    }",
     "explanation": "Similar to longest palindromic substring. That's all both are literally same.",
     "code": "class Solution:\n    def isPalindromicSubSt(self, s: str) -> int:\n        # O(n**2) time complexity\n        res = 0\n        for i in range(len(s)):\n            res += self.countPalindrome(i, i , s)\n            res += self.countPalindrome(i, i + 1, s)\n        return res\n    def countPalindrome(self, l: int, r: int, s: str) -> int:\n        res = 0\n        while l >= 0 and r < len(s) and s[l] == s[r]:\n            res += 1\n            l -= 1\n            r += 1\n        return res"
   },
@@ -795,6 +995,10 @@
       "The number of nodes in the tree is in the range 0 - 10^4.",
       "100 <= Node.val <= 100"
     ],
+    "hints": [
+      "Just like tree traversal and just return the maximum of left and right tree + 1 at the end."
+    ],
+    "pseudocode": "maxDepth(node)\n      if root is null then return 0\n      maxLeft -> maxDepth(node.left)\n      maxRight -> maxDepth(node.right)\n      return maximum(maxLeft, maxRight) + 1",
     "explanation": "Just like tree traversal and just return the maximum of left and right tree + 1 at the end.",
     "code": "class Solution:\n    def maxDepth(self, root: TreeNode) -> int:\n        if (not root):\n            return 0\n        maxLeft = self.maxDepth(root.left)\n        maxRight = self.maxDepth(root.right)\n        return max(maxLeft, maxRight) + 1"
   },
@@ -813,6 +1017,10 @@
       "The number of nodes in both trees is in the range (0, 100).",
       "104 <= Node.val <= 10^4"
     ],
+    "hints": [
+      "It is like a tree traversal, but here it is 2 tree. if both nodes of tree becomes null then return true and if any of the tree node becomes null or values of the node doesn't equal then return false finally call it in dual recurse."
+    ],
+    "pseudocode": "if p is null and q is null\n      return true\n    if p is null or q is null or p.val notEqualTo q.val\n      return false\n    return (isSameTree(p.left, q.left) and (isSameTree(p.right, q.right)))",
     "explanation": "It is like a tree traversal, but here it is 2 tree. if both nodes of tree becomes null then return true and if any of the tree node becomes null or values of the node doesn't equal then return false finally call it in dual recurse.",
     "code": "class Solution:\n    def isSameTree(self, p: TreeNode, q: TreeNode) -> bool:\n        if not p and not q:\n            return True\n        if not p or not q or p.val != q.val:\n            return False\n        return (self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right))"
   },
@@ -831,6 +1039,10 @@
       "The number of nodes in the tree is in the range (0, 100).",
       "100 <= Node.val <= 100"
     ],
+    "hints": [
+      "Traverse tree swap the left node with right by setting the current left to current right and its vice versa and finally return the root node."
+    ],
+    "pseudocode": "if root equals null\n      return null\n    left -> root.left\n    right -> root.right\n    root.left -> invertTree(right)\n    root.right -> invertTree(left)\n    return root",
     "explanation": "Traverse tree swap the left node with right by setting the current left to current right and its vice versa and finally return the root node.",
     "code": "class Solution:\n    def invertTree(self, root: TreeNode) -> TreeNode:\n        if not root:\n            return None\n        left = root.left\n        right = root.right \n        root.left = self.invertTree(right)\n        root.right = self.invertTree(left)\n        return root"
   },
@@ -853,6 +1065,10 @@
       "A simple improvement uses O(m + n) space, but still not the best solution.",
       "Could you devise a constant space solution?"
     ],
+    "hints": [
+      "Use Row and column array as a indicator to make which row and which column will be zero. Still it is not O(1) space."
+    ],
+    "pseudocode": "Rows -> lengthOf(matrix)\n    Cols -> lengthOf(matrix[0])\n    rowBool -> false\n    oneRow -> false\n    for row -> 0 to Rows\n      for column -> 0 to Cols\n        if matrix[row][column] equals 0\n          matrix[0][column] = 0\n          if row greaterThan 0\n            rowBool -> true\n          else\n            oneRow -> true\n      if rowBool\n        rowBool -> false\n        fillArrays(matrix[row], 0)\n    for column -> 0 to Cols\n      if matrix[0][column] equals 0\n        for row -> 0 to Rows\n          matrix[row][column] -> 0\n    if oneRow\n      fillArrays(matrix[0], 0)\n    // don't have to return anything",
     "explanation": "Use Row and column array as a indicator to make which row and which column will be zero. Still it is not O(1) space.",
     "code": "class Solution:\n    def setZeroes(self, matrix: list[list[int]]) -> None:\n        rowBool = False\n        oneRow = False\n        ROWS = len(matrix)\n        COLS = len(matrix[0])\n        for row in range(ROWS):\n            for col in range(COLS):\n                if matrix[row][col] == 0:\n                    # matrix[row][0] = 0\n                    matrix[0][col] = 0\n                    if row > 0:\n                        rowBool = True\n                    else:\n                        oneRow = True\n            if rowBool:\n                rowBool = False\n                matrix[row] = [0] * COLS\n        for col in range(COLS):\n            if matrix[0][col] == 0:\n                for row in range(ROWS):\n                    matrix[row][col] = 0\n        if oneRow:\n            matrix[0] = [0] * COLS\n        # for row in range(len(matrix)):\n        #     if matrix[row][0] == 0:\n        #         matrix[row] = [0] * len(matrix[0])\n        print(matrix)"
   },
@@ -872,6 +1088,8 @@
       "1 <= m, n <= 10",
       "100 <= matrix[i][j] <= 100"
     ],
+    "hints": [],
+    "pseudocode": "",
     "explanation": "Use optimal algorithm approach.",
     "code": "class Solution:\n    def spiralOrder(self, matrix: list[list[int]]) -> list[int]:\n        left = 0\n        top = 0\n        right = len(matrix[0]) - 1\n        bottom = len(matrix) - 1\n        res = []\n        while (left <= right and top <= bottom):\n            # if len(res) == len(matrix) * len(matrix[0]):\n            #     break\n            for i in range(left,right + 1):\n                res.append(matrix[top][i])\n            top += 1\n            for i in range(top, bottom + 1):\n                res.append(matrix[i][right])\n            right -= 1\n            if len(res) == len(matrix) * len(matrix[0]):\n                break\n            for i in range(right, left - 1, -1):\n                res.append(matrix[bottom][i])\n            bottom -= 1\n            for i in range(bottom, top - 1, -1):\n                res.append(matrix[i][left])\n            left += 1\n        return res\nmatrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]"
   },
@@ -890,6 +1108,11 @@
       "1 <= n <= 20",
       "1000 <= matrix[i][j] <= 1000"
     ],
+    "hints": [
+      "If you notice from the real matrix to rotate matrix it will follow some pattern, if you find it, it will be very easy.",
+      "They given that it would be n x n matrix, so first take transpose of matrix it will be very easy, then reverse every row. Then the matrix will get rotated to 90 degree."
+    ],
+    "pseudocode": "for row -> 0 to matrixLength\n      for col -> row + 1 to matrixLength\n        swap(matrix[row][col], matrix[col][row])\n    for row -> 0 to matrixLength\n      l -> 0\n      r -> matrixLength - 1\n      while (l lessThan r)\n        swap(matrix[row][l], matrix[r])\n        l -> l + 1\n        r -> r + 1",
     "explanation": "If you notice from the real matrix to rotate matrix it will follow some pattern, if you find it, it will be very easy. They given that it would be n x n matrix, so first take transpose of matrix it will be very easy, then reverse every row. Then the matrix will get rotated to 90 degree.",
     "code": "class Solution:\n    def rotate(self, matrix: list[list[int]]) -> list[list[int]]:\n        matrixLength = len(matrix)\n        for row in range(matrixLength):\n            for col in range(row, matrixLength):\n                matrix[row][col], matrix[col][row] = matrix[col][row], matrix[row][col]\n        for row in range(len(matrix)):\n            l, r = 0, matrixLength - 1\n            while l < r:\n                matrix[row][l], matrix[row][r] = matrix[row][r], matrix[row][l]\n                l += 1\n                r -= 1\n        return matrix"
   }

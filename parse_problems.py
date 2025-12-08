@@ -29,12 +29,19 @@ def parse_readme(readme_path):
         constraint_text = constraints_match.group(1).strip()
         constraints = [line.strip('- ').strip() for line in constraint_text.split('\n') if line.strip().startswith('-')]
 
-    # Extract hints for explanation
+    # Extract hints as separate list
     hints = []
     hint_pattern = r'<summary><h3>Show Hint \d+</h3></summary>\s*<p>(.*?)</p>'
     for match in re.finditer(hint_pattern, content, re.DOTALL):
         hints.append(match.group(1).strip())
 
+    # Extract pseudocode if available
+    pseudocode = ""
+    pseudocode_match = re.search(r'<summary><h3>Pseudocode</h3></summary>\s*<pre>(.*?)</pre>', content, re.DOTALL)
+    if pseudocode_match:
+        pseudocode = pseudocode_match.group(1).strip()
+
+    # Use hints as explanation if available, otherwise default message
     explanation = " ".join(hints) if hints else "Use optimal algorithm approach."
 
     return {
@@ -42,6 +49,8 @@ def parse_readme(readme_path):
         'description': description,
         'examples': examples,
         'constraints': constraints,
+        'hints': hints,
+        'pseudocode': pseudocode,
         'explanation': explanation
     }
 
@@ -96,7 +105,7 @@ def get_category_from_path(path):
     return 'General'
 
 def main():
-    repo_path = Path('temp_blind75')
+    repo_path = Path('blind_75_flashcard_app')
     problems = []
     problem_id = 1
 
@@ -132,6 +141,8 @@ def main():
             'description': problem_data['description'],
             'examples': problem_data['examples'],
             'constraints': problem_data['constraints'],
+            'hints': problem_data['hints'],
+            'pseudocode': problem_data['pseudocode'],
             'explanation': problem_data['explanation'],
             'code': py_code
         }
