@@ -574,10 +574,10 @@
   },
   {
     "id": 26,
-    "title": "Unknown",
+    "title": "Number of Islands",
     "difficulty": "Medium",
     "category": "Graphs",
-    "description": "",
+    "description": "Given an m x n 2D binary grid grid representing a map of '1's (land) and '0's (water), return the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are surrounded by water.",
     "examples": [
       "Input: grid = [\n  [\"1\",\"1\",\"1\",\"1\",\"0\"],\n  [\"1\",\"1\",\"0\",\"1\",\"0\"],\n  [\"1\",\"1\",\"0\",\"0\",\"0\"],\n  [\"0\",\"0\",\"0\",\"0\",\"0\"]\n]\nOutput: 1",
       "Input: grid = [\n  [\"1\",\"1\",\"0\",\"0\",\"0\"],\n  [\"1\",\"1\",\"0\",\"0\",\"0\"],\n  [\"0\",\"0\",\"1\",\"0\",\"0\"],\n  [\"0\",\"0\",\"0\",\"1\",\"1\"]\n]\nOutput: 3"
@@ -598,10 +598,10 @@
   },
   {
     "id": 27,
-    "title": "Unknown",
+    "title": "Insert Interval",
     "difficulty": "Medium",
     "category": "Intervals",
-    "description": "",
+    "description": "You are given an array of non-overlapping intervals sorted by start time, where intervals[i] = [start_i, end_i], and a new interval newInterval = [start, end]. Insert newInterval into intervals so the result is still sorted and has no overlapping intervals (merge if necessary). Return the resulting intervals.",
     "examples": [
       "Input: intervals = [[1,3],[6,9]], newInterval = [2,5]\nOutput: [[1,5],[6,9]]",
       "Input: intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]\nOutput: [[1,2],[3,10],[12,16]]\nExplanation: Because the new interval [4,8] overlaps with [3,5],[6,7],[8,10]."
@@ -621,10 +621,10 @@
   },
   {
     "id": 28,
-    "title": "Unknown",
+    "title": "Merge Intervals",
     "difficulty": "Medium",
     "category": "Intervals",
-    "description": "",
+    "description": "Given an array of intervals where intervals[i] = [start_i, end_i], merge all overlapping intervals and return an array of the non-overlapping intervals that cover all the intervals in the input.",
     "examples": [
       "Input: intervals = [[1,3],[2,6],[8,10],[15,18]]\nOutput: [[1,6],[8,10],[15,18]]\nExplanation: Since intervals [1,3] and [2,6] overlap, merge them into [1,6].",
       "Input: intervals = [[1,4],[4,5]]\nOutput: [[1,5]]\nExplanation: Intervals [1,4] and [4,5] are considered overlapping."
@@ -1115,5 +1115,596 @@
     "pseudocode": "for row -> 0 to matrixLength\n      for col -> row + 1 to matrixLength\n        swap(matrix[row][col], matrix[col][row])\n    for row -> 0 to matrixLength\n      l -> 0\n      r -> matrixLength - 1\n      while (l lessThan r)\n        swap(matrix[row][l], matrix[r])\n        l -> l + 1\n        r -> r + 1",
     "explanation": "If you notice from the real matrix to rotate matrix it will follow some pattern, if you find it, it will be very easy. They given that it would be n x n matrix, so first take transpose of matrix it will be very easy, then reverse every row. Then the matrix will get rotated to 90 degree.",
     "code": "class Solution:\n    def rotate(self, matrix: list[list[int]]) -> list[list[int]]:\n        matrixLength = len(matrix)\n        for row in range(matrixLength):\n            for col in range(row, matrixLength):\n                matrix[row][col], matrix[col][row] = matrix[col][row], matrix[row][col]\n        for row in range(len(matrix)):\n            l, r = 0, matrixLength - 1\n            while l < r:\n                matrix[row][l], matrix[row][r] = matrix[row][r], matrix[row][l]\n                l += 1\n                r -= 1\n        return matrix"
+  },
+  {
+    "id": 50,
+    "title": "Reverse Bits",
+    "difficulty": "Easy",
+    "category": "Binary & Bit Manipulation",
+    "description": "Reverse the bits of a given 32-bit unsigned integer and return the result as an unsigned integer.",
+    "examples": [
+      "Input: n = 43261596 (00000010100101000001111010011100)\nOutput: 964176192 (00111001011110000010100101000000)",
+      "Input: n = 4294967293\nOutput: 3221225471"
+    ],
+    "constraints": [
+      "The input is a 32-bit unsigned integer."
+    ],
+    "hints": [
+      "Build the answer one bit at a time: take the lowest bit of n and append it to the result.",
+      "Loop exactly 32 times: res = (res << 1) | (n & 1), then n >>= 1."
+    ],
+    "pseudocode": "",
+    "explanation": "Build the answer one bit at a time: take the lowest bit of n and append it to the result. Loop exactly 32 times: res = (res << 1) | (n & 1), then n >>= 1.",
+    "code": "class Solution:\n    def reverseBits(self, n: int) -> int:\n        res = 0\n        for _ in range(32):\n            res = (res << 1) | (n & 1)\n            n >>= 1\n        return res"
+  },
+  {
+    "id": 51,
+    "title": "Clone Graph",
+    "difficulty": "Medium",
+    "category": "Graphs",
+    "description": "Given a reference to a node in a connected undirected graph, return a deep copy (clone) of the graph. Each node contains a value and a list of its neighbors.",
+    "examples": [
+      "Input: adjList = [[2,4],[1,3],[2,4],[1,3]]\nOutput: [[2,4],[1,3],[2,4],[1,3]]",
+      "Input: adjList = []\nOutput: []"
+    ],
+    "constraints": [
+      "The number of nodes is in the range [0, 100].",
+      "1 <= Node.val <= 100",
+      "Node.val is unique for each node.",
+      "No repeated edges or self-loops; the graph is connected."
+    ],
+    "hints": [
+      "Keep a hash map from original node to its clone so each node is copied once (this also handles cycles).",
+      "DFS (or BFS): create the clone, store it in the map, then recursively clone and attach every neighbor."
+    ],
+    "pseudocode": "",
+    "explanation": "Keep a hash map from original node to its clone so each node is copied once (this also handles cycles). DFS (or BFS): create the clone, store it in the map, then recursively clone and attach every neighbor.",
+    "code": "# class Node:\n#     def __init__(self, val=0, neighbors=None):\n#         self.val = val\n#         self.neighbors = neighbors if neighbors is not None else []\n\nclass Solution:\n    def cloneGraph(self, node: 'Optional[Node]') -> 'Optional[Node]':\n        old_to_new = {}\n\n        def dfs(n):\n            if n in old_to_new:\n                return old_to_new[n]\n            copy = Node(n.val)\n            old_to_new[n] = copy\n            for nei in n.neighbors:\n                copy.neighbors.append(dfs(nei))\n            return copy\n\n        return dfs(node) if node else None"
+  },
+  {
+    "id": 52,
+    "title": "Course Schedule",
+    "difficulty": "Medium",
+    "category": "Graphs",
+    "description": "There are numCourses courses labeled 0 to numCourses - 1. prerequisites[i] = [a, b] means you must take course b before course a. Return true if you can finish all courses, otherwise false.",
+    "examples": [
+      "Input: numCourses = 2, prerequisites = [[1,0]]\nOutput: true",
+      "Input: numCourses = 2, prerequisites = [[1,0],[0,1]]\nOutput: false\nExplanation: The courses depend on each other, so it is impossible."
+    ],
+    "constraints": [
+      "1 <= numCourses <= 2000",
+      "0 <= prerequisites.length <= 5000",
+      "All the pairs are unique."
+    ],
+    "hints": [
+      "Model it as a directed graph. You can finish everything exactly when the graph has no cycle.",
+      "Topological sort (Kahn's algorithm): repeatedly take courses with indegree 0. If you process all courses there is no cycle."
+    ],
+    "pseudocode": "",
+    "explanation": "Model it as a directed graph. You can finish everything exactly when the graph has no cycle. Topological sort (Kahn's algorithm): repeatedly take courses with indegree 0. If you process all courses there is no cycle.",
+    "code": "class Solution:\n    def canFinish(self, numCourses: int, prerequisites: list[list[int]]) -> bool:\n        graph = [[] for _ in range(numCourses)]\n        indegree = [0] * numCourses\n        for course, pre in prerequisites:\n            graph[pre].append(course)\n            indegree[course] += 1\n\n        queue = [c for c in range(numCourses) if indegree[c] == 0]\n        taken = 0\n        while queue:\n            cur = queue.pop()\n            taken += 1\n            for nxt in graph[cur]:\n                indegree[nxt] -= 1\n                if indegree[nxt] == 0:\n                    queue.append(nxt)\n        return taken == numCourses"
+  },
+  {
+    "id": 53,
+    "title": "Pacific Atlantic Water Flow",
+    "difficulty": "Medium",
+    "category": "Graphs",
+    "description": "Given an m x n grid of heights, rain water can flow from a cell to a neighbor (up/down/left/right) with height less than or equal to it. The Pacific touches the top and left edges, the Atlantic touches the bottom and right edges. Return all cells from which water can reach both oceans.",
+    "examples": [
+      "Input: heights = [[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]\nOutput: [[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]]"
+    ],
+    "constraints": [
+      "m == heights.length",
+      "n == heights[r].length",
+      "1 <= m, n <= 200",
+      "0 <= heights[r][c] <= 10^5"
+    ],
+    "hints": [
+      "Going from every cell to the oceans is wasteful. Reverse the direction: start at the ocean borders and move uphill.",
+      "Run a DFS from all Pacific border cells and another from all Atlantic border cells (moving to neighbors with height >= current). The answer is the intersection of the two visited sets."
+    ],
+    "pseudocode": "",
+    "explanation": "Going from every cell to the oceans is wasteful. Reverse the direction: start at the ocean borders and move uphill. Run a DFS from all Pacific border cells and another from all Atlantic border cells (moving to neighbors with height >= current). The answer is the intersection of the two visited sets.",
+    "code": "class Solution:\n    def pacificAtlantic(self, heights: list[list[int]]) -> list[list[int]]:\n        ROWS, COLS = len(heights), len(heights[0])\n        pac, atl = set(), set()\n\n        def dfs(r, c, visit, prev):\n            if (r < 0 or c < 0 or r == ROWS or c == COLS\n                    or (r, c) in visit or heights[r][c] < prev):\n                return\n            visit.add((r, c))\n            for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):\n                dfs(r + dr, c + dc, visit, heights[r][c])\n\n        for c in range(COLS):\n            dfs(0, c, pac, heights[0][c])\n            dfs(ROWS - 1, c, atl, heights[ROWS - 1][c])\n        for r in range(ROWS):\n            dfs(r, 0, pac, heights[r][0])\n            dfs(r, COLS - 1, atl, heights[r][COLS - 1])\n\n        return [[r, c] for r in range(ROWS) for c in range(COLS) if (r, c) in pac and (r, c) in atl]"
+  },
+  {
+    "id": 54,
+    "title": "Longest Consecutive Sequence",
+    "difficulty": "Medium",
+    "category": "Graphs",
+    "description": "Given an unsorted array of integers nums, return the length of the longest sequence of consecutive elements. You must write an algorithm that runs in O(n) time.",
+    "examples": [
+      "Input: nums = [100,4,200,1,3,2]\nOutput: 4\nExplanation: The longest consecutive sequence is [1, 2, 3, 4].",
+      "Input: nums = [0,3,7,2,5,8,4,6,0,1]\nOutput: 9"
+    ],
+    "constraints": [
+      "0 <= nums.length <= 10^5",
+      "-10^9 <= nums[i] <= 10^9"
+    ],
+    "hints": [
+      "Put all numbers in a set for O(1) lookup. Sorting would be O(n log n).",
+      "Only start counting from a number that has no predecessor (n - 1 not in the set), then walk upward while n + 1 exists."
+    ],
+    "pseudocode": "",
+    "explanation": "Put all numbers in a set for O(1) lookup. Sorting would be O(n log n). Only start counting from a number that has no predecessor (n - 1 not in the set), then walk upward while n + 1 exists.",
+    "code": "class Solution:\n    def longestConsecutive(self, nums: list[int]) -> int:\n        num_set = set(nums)\n        longest = 0\n        for n in num_set:\n            if n - 1 not in num_set:\n                length = 1\n                while n + length in num_set:\n                    length += 1\n                longest = max(longest, length)\n        return longest"
+  },
+  {
+    "id": 55,
+    "title": "Alien Dictionary",
+    "difficulty": "Hard",
+    "category": "Graphs",
+    "description": "Words from an alien language are given sorted lexicographically by that language's alphabet. Derive a valid order of the letters. If no valid order exists return an empty string; if several are valid, return any of them.",
+    "examples": [
+      "Input: words = [\"wrt\",\"wrf\",\"er\",\"ett\",\"rftt\"]\nOutput: \"wertf\"",
+      "Input: words = [\"z\",\"x\",\"z\"]\nOutput: \"\"\nExplanation: z < x and x < z is a contradiction."
+    ],
+    "constraints": [
+      "1 <= words.length <= 100",
+      "1 <= words[i].length <= 100",
+      "words[i] consists of lowercase English letters."
+    ],
+    "hints": [
+      "Compare each adjacent pair of words: the first differing character gives an edge a -> b (a comes before b).",
+      "Edge case: if a longer word comes before its own prefix (e.g. 'abc' then 'ab') the input is invalid.",
+      "Topologically sort the letters with DFS (detect cycles with a 'currently visiting' state). A cycle means return ''."
+    ],
+    "pseudocode": "",
+    "explanation": "Compare each adjacent pair of words: the first differing character gives an edge a -> b (a comes before b). Edge case: if a longer word comes before its own prefix (e.g. 'abc' then 'ab') the input is invalid. Topologically sort the letters with DFS (detect cycles with a 'currently visiting' state). A cycle means return ''.",
+    "code": "class Solution:\n    def alienOrder(self, words: list[str]) -> str:\n        adj = {c: set() for w in words for c in w}\n        for w1, w2 in zip(words, words[1:]):\n            if len(w1) > len(w2) and w1.startswith(w2):\n                return \"\"\n            for a, b in zip(w1, w2):\n                if a != b:\n                    adj[a].add(b)\n                    break\n\n        visit = {}  # False = visited, True = on current path\n        res = []\n\n        def dfs(c):\n            if c in visit:\n                return visit[c]\n            visit[c] = True\n            for nei in adj[c]:\n                if dfs(nei):\n                    return True\n            visit[c] = False\n            res.append(c)\n            return False\n\n        for c in adj:\n            if dfs(c):\n                return \"\"\n        res.reverse()\n        return \"\".join(res)"
+  },
+  {
+    "id": 56,
+    "title": "Graph Valid Tree",
+    "difficulty": "Medium",
+    "category": "Graphs",
+    "description": "Given n nodes labeled 0 to n - 1 and a list of undirected edges, return true if the edges form a valid tree, and false otherwise.",
+    "examples": [
+      "Input: n = 5, edges = [[0,1],[0,2],[0,3],[1,4]]\nOutput: true",
+      "Input: n = 5, edges = [[0,1],[1,2],[2,3],[1,3],[1,4]]\nOutput: false"
+    ],
+    "constraints": [
+      "1 <= n <= 2000",
+      "0 <= edges.length <= 5000",
+      "There are no self-loops or repeated edges."
+    ],
+    "hints": [
+      "A graph is a tree iff it is connected and has no cycle. Equivalently: exactly n - 1 edges and no cycle.",
+      "Use union-find: if an edge connects two nodes already in the same set, there is a cycle."
+    ],
+    "pseudocode": "",
+    "explanation": "A graph is a tree iff it is connected and has no cycle. Equivalently: exactly n - 1 edges and no cycle. Use union-find: if an edge connects two nodes already in the same set, there is a cycle.",
+    "code": "class Solution:\n    def validTree(self, n: int, edges: list[list[int]]) -> bool:\n        if len(edges) != n - 1:\n            return False\n        parent = list(range(n))\n\n        def find(x):\n            while parent[x] != x:\n                parent[x] = parent[parent[x]]\n                x = parent[x]\n            return x\n\n        for a, b in edges:\n            ra, rb = find(a), find(b)\n            if ra == rb:\n                return False\n            parent[ra] = rb\n        return True"
+  },
+  {
+    "id": 57,
+    "title": "Number of Connected Components in an Undirected Graph",
+    "difficulty": "Medium",
+    "category": "Graphs",
+    "description": "Given n nodes labeled 0 to n - 1 and a list of undirected edges, return the number of connected components in the graph.",
+    "examples": [
+      "Input: n = 5, edges = [[0,1],[1,2],[3,4]]\nOutput: 2",
+      "Input: n = 5, edges = [[0,1],[1,2],[2,3],[3,4]]\nOutput: 1"
+    ],
+    "constraints": [
+      "1 <= n <= 2000",
+      "1 <= edges.length <= 5000",
+      "There are no repeated edges."
+    ],
+    "hints": [
+      "Start with n components. Every edge that joins two different components reduces the count by one.",
+      "Union-find with path compression: union each edge, and decrement the count only when the roots differ."
+    ],
+    "pseudocode": "",
+    "explanation": "Start with n components. Every edge that joins two different components reduces the count by one. Union-find with path compression: union each edge, and decrement the count only when the roots differ.",
+    "code": "class Solution:\n    def countComponents(self, n: int, edges: list[list[int]]) -> int:\n        parent = list(range(n))\n\n        def find(x):\n            while parent[x] != x:\n                parent[x] = parent[parent[x]]\n                x = parent[x]\n            return x\n\n        components = n\n        for a, b in edges:\n            ra, rb = find(a), find(b)\n            if ra != rb:\n                parent[ra] = rb\n                components -= 1\n        return components"
+  },
+  {
+    "id": 58,
+    "title": "Meeting Rooms",
+    "difficulty": "Easy",
+    "category": "Intervals",
+    "description": "Given an array of meeting time intervals [start, end], determine if a person could attend all the meetings (no two meetings overlap).",
+    "examples": [
+      "Input: intervals = [[0,30],[5,10],[15,20]]\nOutput: false",
+      "Input: intervals = [[7,10],[2,4]]\nOutput: true"
+    ],
+    "constraints": [
+      "0 <= intervals.length <= 10^4",
+      "intervals[i].length == 2",
+      "0 <= start < end <= 10^6"
+    ],
+    "hints": [
+      "Sort the meetings by start time.",
+      "After sorting, there is an overlap only if some meeting starts before the previous one ends."
+    ],
+    "pseudocode": "",
+    "explanation": "Sort the meetings by start time. After sorting, there is an overlap only if some meeting starts before the previous one ends.",
+    "code": "class Solution:\n    def canAttendMeetings(self, intervals: list[list[int]]) -> bool:\n        intervals.sort(key=lambda i: i[0])\n        for i in range(1, len(intervals)):\n            if intervals[i][0] < intervals[i - 1][1]:\n                return False\n        return True"
+  },
+  {
+    "id": 59,
+    "title": "Meeting Rooms II",
+    "difficulty": "Medium",
+    "category": "Intervals",
+    "description": "Given an array of meeting time intervals [start, end], return the minimum number of conference rooms required.",
+    "examples": [
+      "Input: intervals = [[0,30],[5,10],[15,20]]\nOutput: 2",
+      "Input: intervals = [[7,10],[2,4]]\nOutput: 1"
+    ],
+    "constraints": [
+      "1 <= intervals.length <= 10^4",
+      "0 <= start < end <= 10^6"
+    ],
+    "hints": [
+      "Sort by start time and track the end times of meetings currently using a room.",
+      "Use a min-heap of end times: if the earliest-ending meeting is over before the next one starts, reuse that room (pop). The max heap size is the answer."
+    ],
+    "pseudocode": "",
+    "explanation": "Sort by start time and track the end times of meetings currently using a room. Use a min-heap of end times: if the earliest-ending meeting is over before the next one starts, reuse that room (pop). The max heap size is the answer.",
+    "code": "import heapq\n\nclass Solution:\n    def minMeetingRooms(self, intervals: list[list[int]]) -> int:\n        intervals.sort(key=lambda i: i[0])\n        rooms = []  # min-heap of end times\n        for start, end in intervals:\n            if rooms and rooms[0] <= start:\n                heapq.heappop(rooms)\n            heapq.heappush(rooms, end)\n        return len(rooms)"
+  },
+  {
+    "id": 60,
+    "title": "Merge k Sorted Lists",
+    "difficulty": "Hard",
+    "category": "Linked List",
+    "description": "You are given an array of k linked-lists, each sorted in ascending order. Merge all of them into one sorted linked-list and return it.",
+    "examples": [
+      "Input: lists = [[1,4,5],[1,3,4],[2,6]]\nOutput: [1,1,2,3,4,4,5,6]",
+      "Input: lists = []\nOutput: []"
+    ],
+    "constraints": [
+      "k == lists.length",
+      "0 <= k <= 10^4",
+      "0 <= lists[i].length <= 500",
+      "-10^4 <= lists[i][j] <= 10^4",
+      "The total number of nodes does not exceed 10^4."
+    ],
+    "hints": [
+      "Merging two sorted lists is easy. With k lists, you always need the smallest current head among k candidates.",
+      "Keep the k heads in a min-heap. Pop the smallest, append it, push its next node. Use the list index as a tie-breaker because nodes are not comparable. Time O(N log k)."
+    ],
+    "pseudocode": "",
+    "explanation": "Merging two sorted lists is easy. With k lists, you always need the smallest current head among k candidates. Keep the k heads in a min-heap. Pop the smallest, append it, push its next node. Use the list index as a tie-breaker because nodes are not comparable. Time O(N log k).",
+    "code": "import heapq\n\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\n\nclass Solution:\n    def mergeKLists(self, lists: list[Optional[ListNode]]) -> Optional[ListNode]:\n        heap = []\n        for i, node in enumerate(lists):\n            if node:\n                heapq.heappush(heap, (node.val, i, node))\n\n        dummy = tail = ListNode()\n        while heap:\n            _, i, node = heapq.heappop(heap)\n            tail.next = node\n            tail = node\n            if node.next:\n                heapq.heappush(heap, (node.next.val, i, node.next))\n        return dummy.next"
+  },
+  {
+    "id": 61,
+    "title": "Word Search",
+    "difficulty": "Medium",
+    "category": "Matrix",
+    "description": "Given an m x n grid of characters board and a string word, return true if word exists in the grid. The word is built from sequentially adjacent (horizontal or vertical) cells, and the same cell may not be used more than once.",
+    "examples": [
+      "Input: board = [[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]], word = \"ABCCED\"\nOutput: true",
+      "Input: board = [[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]], word = \"ABCB\"\nOutput: false"
+    ],
+    "constraints": [
+      "m == board.length, n == board[i].length",
+      "1 <= m, n <= 6",
+      "1 <= word.length <= 15",
+      "board and word consist of only lowercase and uppercase English letters."
+    ],
+    "hints": [
+      "Try every cell as a starting point and run a backtracking DFS that matches word[i] at each step.",
+      "Mark the current cell as visited (e.g. temporarily set it to '#'), explore the 4 neighbors, then restore the cell when backtracking."
+    ],
+    "pseudocode": "",
+    "explanation": "Try every cell as a starting point and run a backtracking DFS that matches word[i] at each step. Mark the current cell as visited (e.g. temporarily set it to '#'), explore the 4 neighbors, then restore the cell when backtracking.",
+    "code": "class Solution:\n    def exist(self, board: list[list[str]], word: str) -> bool:\n        ROWS, COLS = len(board), len(board[0])\n\n        def dfs(r, c, i):\n            if i == len(word):\n                return True\n            if (r < 0 or c < 0 or r == ROWS or c == COLS\n                    or board[r][c] != word[i]):\n                return False\n            tmp, board[r][c] = board[r][c], \"#\"\n            found = (dfs(r + 1, c, i + 1) or dfs(r - 1, c, i + 1)\n                     or dfs(r, c + 1, i + 1) or dfs(r, c - 1, i + 1))\n            board[r][c] = tmp\n            return found\n\n        return any(dfs(r, c, 0) for r in range(ROWS) for c in range(COLS))"
+  },
+  {
+    "id": 62,
+    "title": "Encode and Decode Strings",
+    "difficulty": "Medium",
+    "category": "String",
+    "description": "Design an algorithm to encode a list of strings into a single string, and decode that string back to the original list. The strings may contain any characters, including delimiters you might be tempted to use.",
+    "examples": [
+      "Input: [\"lint\",\"code\",\"love\",\"you\"]\nOutput: [\"lint\",\"code\",\"love\",\"you\"]\nExplanation: decode(encode(strs)) must equal strs."
+    ],
+    "constraints": [
+      "0 <= strs.length < 100",
+      "0 <= strs[i].length < 200",
+      "strs[i] contains any possible characters."
+    ],
+    "hints": [
+      "A plain delimiter fails because the strings may contain it.",
+      "Prefix every string with its length and a separator: '4#lint'. When decoding, read digits up to '#', then take exactly that many characters."
+    ],
+    "pseudocode": "",
+    "explanation": "A plain delimiter fails because the strings may contain it. Prefix every string with its length and a separator: '4#lint'. When decoding, read digits up to '#', then take exactly that many characters.",
+    "code": "class Solution:\n    def encode(self, strs: list[str]) -> str:\n        return \"\".join(f\"{len(s)}#{s}\" for s in strs)\n\n    def decode(self, s: str) -> list[str]:\n        res, i = [], 0\n        while i < len(s):\n            j = i\n            while s[j] != \"#\":\n                j += 1\n            length = int(s[i:j])\n            res.append(s[j + 1:j + 1 + length])\n            i = j + 1 + length\n        return res"
+  },
+  {
+    "id": 63,
+    "title": "Binary Tree Maximum Path Sum",
+    "difficulty": "Hard",
+    "category": "Trees",
+    "description": "A path in a binary tree is a sequence of nodes where each pair of adjacent nodes has an edge, and each node appears at most once. The path need not pass through the root. Return the maximum path sum of any non-empty path.",
+    "examples": [
+      "Input: root = [1,2,3]\nOutput: 6",
+      "Input: root = [-10,9,20,null,null,15,7]\nOutput: 42\nExplanation: The path 15 -> 20 -> 7 has sum 42."
+    ],
+    "constraints": [
+      "The number of nodes is in the range [1, 3 * 10^4].",
+      "-1000 <= Node.val <= 1000"
+    ],
+    "hints": [
+      "For each node, the best path that 'bends' at it is node.val + best downward gain from the left + best downward gain from the right.",
+      "DFS returns the best downward path starting at a node (node.val + max(left, right), ignoring negative gains by clamping to 0) while a global variable tracks the best bent path."
+    ],
+    "pseudocode": "",
+    "explanation": "For each node, the best path that 'bends' at it is node.val + best downward gain from the left + best downward gain from the right. DFS returns the best downward path starting at a node (node.val + max(left, right), ignoring negative gains by clamping to 0) while a global variable tracks the best bent path.",
+    "code": "# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\n\nclass Solution:\n    def maxPathSum(self, root: Optional[TreeNode]) -> int:\n        res = root.val\n\n        def dfs(node):\n            nonlocal res\n            if not node:\n                return 0\n            left = max(dfs(node.left), 0)\n            right = max(dfs(node.right), 0)\n            res = max(res, node.val + left + right)\n            return node.val + max(left, right)\n\n        dfs(root)\n        return res"
+  },
+  {
+    "id": 64,
+    "title": "Binary Tree Level Order Traversal",
+    "difficulty": "Medium",
+    "category": "Trees",
+    "description": "Given the root of a binary tree, return the level order traversal of its nodes' values (from left to right, level by level).",
+    "examples": [
+      "Input: root = [3,9,20,null,null,15,7]\nOutput: [[3],[9,20],[15,7]]",
+      "Input: root = []\nOutput: []"
+    ],
+    "constraints": [
+      "The number of nodes is in the range [0, 2000].",
+      "-1000 <= Node.val <= 1000"
+    ],
+    "hints": [
+      "Use BFS with a queue.",
+      "In each round process exactly len(queue) nodes: those are one whole level. Collect their values and enqueue their children."
+    ],
+    "pseudocode": "",
+    "explanation": "Use BFS with a queue. In each round process exactly len(queue) nodes: those are one whole level. Collect their values and enqueue their children.",
+    "code": "import collections\n\nclass Solution:\n    def levelOrder(self, root: Optional[TreeNode]) -> list[list[int]]:\n        res = []\n        q = collections.deque([root] if root else [])\n        while q:\n            level = []\n            for _ in range(len(q)):\n                node = q.popleft()\n                level.append(node.val)\n                if node.left:\n                    q.append(node.left)\n                if node.right:\n                    q.append(node.right)\n            res.append(level)\n        return res"
+  },
+  {
+    "id": 65,
+    "title": "Serialize and Deserialize Binary Tree",
+    "difficulty": "Hard",
+    "category": "Trees",
+    "description": "Design an algorithm to serialize a binary tree into a string and deserialize that string back into the original tree structure. There is no restriction on the format you use.",
+    "examples": [
+      "Input: root = [1,2,3,null,null,4,5]\nOutput: [1,2,3,null,null,4,5]"
+    ],
+    "constraints": [
+      "The number of nodes is in the range [0, 10^4].",
+      "-1000 <= Node.val <= 1000"
+    ],
+    "hints": [
+      "A preorder traversal that also records null children ('N') uniquely identifies a tree.",
+      "Serialize with DFS joined by commas. Deserialize by consuming tokens in the same order: 'N' returns None, otherwise create a node and recursively build left then right."
+    ],
+    "pseudocode": "",
+    "explanation": "A preorder traversal that also records null children ('N') uniquely identifies a tree. Serialize with DFS joined by commas. Deserialize by consuming tokens in the same order: 'N' returns None, otherwise create a node and recursively build left then right.",
+    "code": "# class TreeNode:\n#     def __init__(self, x):\n#         self.val = x\n#         self.left = None\n#         self.right = None\n\nclass Codec:\n    def serialize(self, root):\n        res = []\n\n        def dfs(node):\n            if not node:\n                res.append(\"N\")\n                return\n            res.append(str(node.val))\n            dfs(node.left)\n            dfs(node.right)\n\n        dfs(root)\n        return \",\".join(res)\n\n    def deserialize(self, data):\n        vals = data.split(\",\")\n        self.i = 0\n\n        def dfs():\n            if vals[self.i] == \"N\":\n                self.i += 1\n                return None\n            node = TreeNode(int(vals[self.i]))\n            self.i += 1\n            node.left = dfs()\n            node.right = dfs()\n            return node\n\n        return dfs()"
+  },
+  {
+    "id": 66,
+    "title": "Subtree of Another Tree",
+    "difficulty": "Easy",
+    "category": "Trees",
+    "description": "Given the roots of two binary trees root and subRoot, return true if there is a subtree of root with the same structure and node values as subRoot, and false otherwise.",
+    "examples": [
+      "Input: root = [3,4,5,1,2], subRoot = [4,1,2]\nOutput: true",
+      "Input: root = [3,4,5,1,2,null,null,null,null,0], subRoot = [4,1,2]\nOutput: false"
+    ],
+    "constraints": [
+      "The number of nodes in root is in the range [1, 2000].",
+      "The number of nodes in subRoot is in the range [1, 1000].",
+      "-10^4 <= root.val, subRoot.val <= 10^4"
+    ],
+    "hints": [
+      "You already know how to check whether two trees are identical (Same Tree).",
+      "Visit every node of root and run the same-tree check against subRoot at each one."
+    ],
+    "pseudocode": "",
+    "explanation": "You already know how to check whether two trees are identical (Same Tree). Visit every node of root and run the same-tree check against subRoot at each one.",
+    "code": "class Solution:\n    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:\n        if not subRoot:\n            return True\n        if not root:\n            return False\n        if self.sameTree(root, subRoot):\n            return True\n        return self.isSubtree(root.left, subRoot) or self.isSubtree(root.right, subRoot)\n\n    def sameTree(self, p, q):\n        if not p and not q:\n            return True\n        if p and q and p.val == q.val:\n            return self.sameTree(p.left, q.left) and self.sameTree(p.right, q.right)\n        return False"
+  },
+  {
+    "id": 67,
+    "title": "Construct Binary Tree from Preorder and Inorder Traversal",
+    "difficulty": "Medium",
+    "category": "Trees",
+    "description": "Given two integer arrays preorder and inorder, the preorder and inorder traversals of the same binary tree, construct and return the binary tree. All values are unique.",
+    "examples": [
+      "Input: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]\nOutput: [3,9,20,null,null,15,7]",
+      "Input: preorder = [-1], inorder = [-1]\nOutput: [-1]"
+    ],
+    "constraints": [
+      "1 <= preorder.length <= 3000",
+      "inorder.length == preorder.length",
+      "-3000 <= preorder[i], inorder[i] <= 3000",
+      "Each value appears once in each array."
+    ],
+    "hints": [
+      "The first element of preorder is always the root.",
+      "Find the root in inorder: everything left of it is the left subtree, everything right is the right subtree. The left size tells you how to split preorder. Use a hash map for inorder positions to stay O(n)."
+    ],
+    "pseudocode": "",
+    "explanation": "The first element of preorder is always the root. Find the root in inorder: everything left of it is the left subtree, everything right is the right subtree. The left size tells you how to split preorder. Use a hash map for inorder positions to stay O(n).",
+    "code": "class Solution:\n    def buildTree(self, preorder: list[int], inorder: list[int]) -> Optional[TreeNode]:\n        idx = {v: i for i, v in enumerate(inorder)}\n        self.pre = 0\n\n        def build(l, r):\n            if l > r:\n                return None\n            root = TreeNode(preorder[self.pre])\n            self.pre += 1\n            mid = idx[root.val]\n            root.left = build(l, mid - 1)\n            root.right = build(mid + 1, r)\n            return root\n\n        return build(0, len(inorder) - 1)"
+  },
+  {
+    "id": 68,
+    "title": "Validate Binary Search Tree",
+    "difficulty": "Medium",
+    "category": "Trees",
+    "description": "Given the root of a binary tree, determine if it is a valid binary search tree: for every node, all values in the left subtree are strictly less and all values in the right subtree are strictly greater.",
+    "examples": [
+      "Input: root = [2,1,3]\nOutput: true",
+      "Input: root = [5,1,4,null,null,3,6]\nOutput: false\nExplanation: The root's right child is 4, but its left child is 3 which is less than 5."
+    ],
+    "constraints": [
+      "The number of nodes is in the range [1, 10^4].",
+      "-2^31 <= Node.val <= 2^31 - 1"
+    ],
+    "hints": [
+      "Comparing a node only to its direct children is not enough: a deeper node must respect every ancestor.",
+      "Pass down an allowed open interval (low, high). Going left tightens high to node.val, going right tightens low to node.val."
+    ],
+    "pseudocode": "",
+    "explanation": "Comparing a node only to its direct children is not enough: a deeper node must respect every ancestor. Pass down an allowed open interval (low, high). Going left tightens high to node.val, going right tightens low to node.val.",
+    "code": "class Solution:\n    def isValidBST(self, root: Optional[TreeNode]) -> bool:\n        def valid(node, low, high):\n            if not node:\n                return True\n            if not (low < node.val < high):\n                return False\n            return valid(node.left, low, node.val) and valid(node.right, node.val, high)\n\n        return valid(root, float(\"-inf\"), float(\"inf\"))"
+  },
+  {
+    "id": 69,
+    "title": "Kth Smallest Element in a BST",
+    "difficulty": "Medium",
+    "category": "Trees",
+    "description": "Given the root of a binary search tree and an integer k, return the kth smallest value (1-indexed) of all the node values in the tree.",
+    "examples": [
+      "Input: root = [3,1,4,null,2], k = 1\nOutput: 1",
+      "Input: root = [5,3,6,2,4,null,null,1], k = 3\nOutput: 3"
+    ],
+    "constraints": [
+      "The number of nodes is n, with 1 <= k <= n <= 10^4.",
+      "0 <= Node.val <= 10^4"
+    ],
+    "hints": [
+      "An inorder traversal of a BST visits values in sorted order.",
+      "Do the inorder traversal iteratively with a stack and stop as soon as you pop the kth node."
+    ],
+    "pseudocode": "",
+    "explanation": "An inorder traversal of a BST visits values in sorted order. Do the inorder traversal iteratively with a stack and stop as soon as you pop the kth node.",
+    "code": "class Solution:\n    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:\n        stack = []\n        cur = root\n        while stack or cur:\n            while cur:\n                stack.append(cur)\n                cur = cur.left\n            cur = stack.pop()\n            k -= 1\n            if k == 0:\n                return cur.val\n            cur = cur.right"
+  },
+  {
+    "id": 70,
+    "title": "Lowest Common Ancestor of a Binary Search Tree",
+    "difficulty": "Medium",
+    "category": "Trees",
+    "description": "Given a binary search tree and two nodes p and q in it, find their lowest common ancestor (LCA): the lowest node that has both p and q as descendants (a node can be a descendant of itself).",
+    "examples": [
+      "Input: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8\nOutput: 6",
+      "Input: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4\nOutput: 2"
+    ],
+    "constraints": [
+      "The number of nodes is in the range [2, 10^5].",
+      "All Node.val are unique.",
+      "p != q, and both exist in the BST."
+    ],
+    "hints": [
+      "Use the BST ordering: if both p and q are smaller than the current node, the LCA is in the left subtree; if both are larger, it is in the right subtree.",
+      "The first node where p and q split (or one equals the node) is the LCA. Iterate from the root; no recursion needed."
+    ],
+    "pseudocode": "",
+    "explanation": "Use the BST ordering: if both p and q are smaller than the current node, the LCA is in the left subtree; if both are larger, it is in the right subtree. The first node where p and q split (or one equals the node) is the LCA. Iterate from the root; no recursion needed.",
+    "code": "class Solution:\n    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':\n        cur = root\n        while cur:\n            if p.val > cur.val and q.val > cur.val:\n                cur = cur.right\n            elif p.val < cur.val and q.val < cur.val:\n                cur = cur.left\n            else:\n                return cur"
+  },
+  {
+    "id": 71,
+    "title": "Implement Trie (Prefix Tree)",
+    "difficulty": "Medium",
+    "category": "Trees",
+    "description": "Implement a Trie with insert(word), search(word) (true if the exact word was inserted), and startsWith(prefix) (true if any inserted word starts with prefix).",
+    "examples": [
+      "Input: [\"Trie\",\"insert\",\"search\",\"search\",\"startsWith\",\"insert\",\"search\"], [[],[\"apple\"],[\"apple\"],[\"app\"],[\"app\"],[\"app\"],[\"app\"]]\nOutput: [null,null,true,false,true,null,true]"
+    ],
+    "constraints": [
+      "1 <= word.length, prefix.length <= 2000",
+      "word and prefix consist only of lowercase English letters."
+    ],
+    "hints": [
+      "Each node holds a map from character to child node, plus a flag marking the end of a word.",
+      "search and startsWith both walk the characters; search additionally requires the end-of-word flag on the last node."
+    ],
+    "pseudocode": "",
+    "explanation": "Each node holds a map from character to child node, plus a flag marking the end of a word. search and startsWith both walk the characters; search additionally requires the end-of-word flag on the last node.",
+    "code": "class TrieNode:\n    def __init__(self):\n        self.children = {}\n        self.end = False\n\nclass Trie:\n    def __init__(self):\n        self.root = TrieNode()\n\n    def insert(self, word: str) -> None:\n        cur = self.root\n        for c in word:\n            cur = cur.children.setdefault(c, TrieNode())\n        cur.end = True\n\n    def _walk(self, s):\n        cur = self.root\n        for c in s:\n            if c not in cur.children:\n                return None\n            cur = cur.children[c]\n        return cur\n\n    def search(self, word: str) -> bool:\n        node = self._walk(word)\n        return node is not None and node.end\n\n    def startsWith(self, prefix: str) -> bool:\n        return self._walk(prefix) is not None"
+  },
+  {
+    "id": 72,
+    "title": "Design Add and Search Words Data Structure",
+    "difficulty": "Medium",
+    "category": "Trees",
+    "description": "Design a data structure that supports addWord(word) and search(word). search may contain '.' which matches any single letter.",
+    "examples": [
+      "Input: [\"WordDictionary\",\"addWord\",\"addWord\",\"addWord\",\"search\",\"search\",\"search\",\"search\"], [[],[\"bad\"],[\"dad\"],[\"mad\"],[\"pad\"],[\"bad\"],[\".ad\"],[\"b..\"]]\nOutput: [null,null,null,null,false,true,true,true]"
+    ],
+    "constraints": [
+      "1 <= word.length <= 25",
+      "addWord words contain only lowercase letters.",
+      "search words contain lowercase letters or '.', with at most 2 dots."
+    ],
+    "hints": [
+      "Store words in a trie, exactly like Implement Trie.",
+      "In search, a normal letter follows one child. On '.', try every child with DFS and return true if any branch matches the rest of the word."
+    ],
+    "pseudocode": "",
+    "explanation": "Store words in a trie, exactly like Implement Trie. In search, a normal letter follows one child. On '.', try every child with DFS and return true if any branch matches the rest of the word.",
+    "code": "class TrieNode:\n    def __init__(self):\n        self.children = {}\n        self.end = False\n\nclass WordDictionary:\n    def __init__(self):\n        self.root = TrieNode()\n\n    def addWord(self, word: str) -> None:\n        cur = self.root\n        for c in word:\n            cur = cur.children.setdefault(c, TrieNode())\n        cur.end = True\n\n    def search(self, word: str) -> bool:\n        def dfs(i, node):\n            for j in range(i, len(word)):\n                c = word[j]\n                if c == \".\":\n                    return any(dfs(j + 1, child) for child in node.children.values())\n                if c not in node.children:\n                    return False\n                node = node.children[c]\n            return node.end\n\n        return dfs(0, self.root)"
+  },
+  {
+    "id": 73,
+    "title": "Word Search II",
+    "difficulty": "Hard",
+    "category": "Trees",
+    "description": "Given an m x n board of characters and a list of strings words, return all words on the board. Each word is built from sequentially adjacent cells (horizontal or vertical), and a cell may not be reused within a word.",
+    "examples": [
+      "Input: board = [[\"o\",\"a\",\"a\",\"n\"],[\"e\",\"t\",\"a\",\"e\"],[\"i\",\"h\",\"k\",\"r\"],[\"i\",\"f\",\"l\",\"v\"]], words = [\"oath\",\"pea\",\"eat\",\"rain\"]\nOutput: [\"eat\",\"oath\"]"
+    ],
+    "constraints": [
+      "m == board.length, n == board[i].length",
+      "1 <= m, n <= 12",
+      "1 <= words.length <= 3 * 10^4",
+      "1 <= words[i].length <= 10",
+      "All the strings of words are unique."
+    ],
+    "hints": [
+      "Running Word Search once per word is too slow. Put all the words in a trie and search the board once.",
+      "DFS from each cell following trie children; when you reach a node that ends a word, record it. Prune: after finding a word, remove dead trie branches so the search stays fast."
+    ],
+    "pseudocode": "",
+    "explanation": "Running Word Search once per word is too slow. Put all the words in a trie and search the board once. DFS from each cell following trie children; when you reach a node that ends a word, record it. Prune: after finding a word, remove dead trie branches so the search stays fast.",
+    "code": "class TrieNode:\n    def __init__(self):\n        self.children = {}\n        self.word = None\n\nclass Solution:\n    def findWords(self, board: list[list[str]], words: list[str]) -> list[str]:\n        root = TrieNode()\n        for w in words:\n            cur = root\n            for c in w:\n                cur = cur.children.setdefault(c, TrieNode())\n            cur.word = w\n\n        ROWS, COLS = len(board), len(board[0])\n        res = []\n\n        def dfs(r, c, parent):\n            ch = board[r][c]\n            node = parent.children[ch]\n            if node.word:\n                res.append(node.word)\n                node.word = None\n\n            board[r][c] = \"#\"\n            for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):\n                nr, nc = r + dr, c + dc\n                if 0 <= nr < ROWS and 0 <= nc < COLS and board[nr][nc] in node.children:\n                    dfs(nr, nc, node)\n            board[r][c] = ch\n\n            if not node.children and not node.word:\n                del parent.children[ch]  # prune exhausted branch\n\n        for r in range(ROWS):\n            for c in range(COLS):\n                if board[r][c] in root.children:\n                    dfs(r, c, root)\n        return res"
+  },
+  {
+    "id": 74,
+    "title": "Top K Frequent Elements",
+    "difficulty": "Medium",
+    "category": "Heap",
+    "description": "Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order. The algorithm should be better than O(n log n).",
+    "examples": [
+      "Input: nums = [1,1,1,2,2,3], k = 2\nOutput: [1,2]",
+      "Input: nums = [1], k = 1\nOutput: [1]"
+    ],
+    "constraints": [
+      "1 <= nums.length <= 10^5",
+      "-10^4 <= nums[i] <= 10^4",
+      "k is in the range [1, number of unique elements].",
+      "The answer is guaranteed to be unique."
+    ],
+    "hints": [
+      "Count occurrences with a hash map.",
+      "Bucket sort: a frequency can be at most n, so make buckets indexed by frequency, then scan from the highest bucket down until you have k elements. O(n)."
+    ],
+    "pseudocode": "",
+    "explanation": "Count occurrences with a hash map. Bucket sort: a frequency can be at most n, so make buckets indexed by frequency, then scan from the highest bucket down until you have k elements. O(n).",
+    "code": "class Solution:\n    def topKFrequent(self, nums: list[int], k: int) -> list[int]:\n        count = {}\n        for n in nums:\n            count[n] = count.get(n, 0) + 1\n\n        buckets = [[] for _ in range(len(nums) + 1)]\n        for n, freq in count.items():\n            buckets[freq].append(n)\n\n        res = []\n        for freq in range(len(buckets) - 1, 0, -1):\n            for n in buckets[freq]:\n                res.append(n)\n                if len(res) == k:\n                    return res"
+  },
+  {
+    "id": 75,
+    "title": "Find Median from Data Stream",
+    "difficulty": "Hard",
+    "category": "Heap",
+    "description": "Design a data structure that supports addNum(num) to add an integer from a data stream, and findMedian() to return the median of all elements so far (the mean of the two middle values if the count is even).",
+    "examples": [
+      "Input: [\"MedianFinder\",\"addNum\",\"addNum\",\"findMedian\",\"addNum\",\"findMedian\"], [[],[1],[2],[],[3],[]]\nOutput: [null,null,null,1.5,null,2.0]"
+    ],
+    "constraints": [
+      "-10^5 <= num <= 10^5",
+      "There will be at least one element before findMedian is called.",
+      "At most 5 * 10^4 calls will be made."
+    ],
+    "hints": [
+      "Keep the smaller half of the numbers in a max-heap and the larger half in a min-heap.",
+      "Rebalance after each insert so the heaps differ in size by at most 1. The median is the top of the bigger heap, or the average of both tops when sizes are equal."
+    ],
+    "pseudocode": "",
+    "explanation": "Keep the smaller half of the numbers in a max-heap and the larger half in a min-heap. Rebalance after each insert so the heaps differ in size by at most 1. The median is the top of the bigger heap, or the average of both tops when sizes are equal.",
+    "code": "import heapq\n\nclass MedianFinder:\n    def __init__(self):\n        self.small = []  # max-heap (store negatives)\n        self.large = []  # min-heap\n\n    def addNum(self, num: int) -> None:\n        heapq.heappush(self.small, -num)\n        heapq.heappush(self.large, -heapq.heappop(self.small))\n        if len(self.large) > len(self.small):\n            heapq.heappush(self.small, -heapq.heappop(self.large))\n\n    def findMedian(self) -> float:\n        if len(self.small) > len(self.large):\n            return float(-self.small[0])\n        return (-self.small[0] + self.large[0]) / 2.0"
   }
 ]

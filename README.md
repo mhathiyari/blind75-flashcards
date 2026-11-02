@@ -4,16 +4,16 @@ Interactive flashcard application for mastering the Blind 75 LeetCode problems. 
 
 ## Features
 
-- **49 LeetCode problems** from the Blind 75 list (all currently documented problems from the source repo)
+- **75 LeetCode problems** — the complete Blind 75 list
 - Interactive flashcard interface with flip animation
 - Dark theme UI optimized for extended study sessions
 - Category-based filtering (Arrays, Dynamic Programming, Trees, etc.)
 - Navigation through problems with Previous/Next buttons
 - **Randomized problem order** on each server restart for varied practice
-- Progress tracking (X/49 counter)
+- Progress tracking (X/75 counter)
 - Responsive design for desktop and mobile
 
-> **Note**: The Blind 75 list contains 75 problems total. This app currently includes the 49 problems that have complete documentation (description, examples, constraints, hints, and solutions) from the [source repository](https://github.com/Sugapriyan-P-K/blind75/). The remaining problems will be added as they become available in the source repo.
+> **Note**: The 75 problems are the standard Blind 75 list. 49 come from the [source repository](https://github.com/Sugapriyan-P-K/blind75/), which only documented those; the other 26 (graphs, trees, tries, heaps, etc.) were written separately, with solutions tested.
 
 ## Tech Stack
 
@@ -117,7 +117,7 @@ uv run uvicorn main:app --port 5000
 blind75-flashcards/
 ├── main.py                     # FastAPI application with routes
 ├── data/
-│   └── problems.json           # All 49 problems with solutions
+│   └── problems.json           # All 75 problems with solutions
 ├── templates/
 │   ├── base.html               # Base template with styles
 │   ├── index.html              # Main page
