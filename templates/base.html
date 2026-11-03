@@ -115,8 +115,13 @@
 
     <script>
         // Remember the chosen solution language across cards (Python by default).
+        // Kept in memory so it works even when localStorage is blocked; storage only
+        // carries the choice over to later visits.
+        var currentLang = null;
         function getLang() {
-            try { return localStorage.getItem("lang") || "python"; } catch (e) { return "python"; }
+            if (currentLang) return currentLang;
+            try { currentLang = localStorage.getItem("lang"); } catch (e) {}
+            return currentLang || "python";
         }
         function applyLang() {
             var lang = getLang();
@@ -128,6 +133,7 @@
             });
         }
         function setLang(lang) {
+            currentLang = lang;
             try { localStorage.setItem("lang", lang); } catch (e) {}
             applyLang();
         }
