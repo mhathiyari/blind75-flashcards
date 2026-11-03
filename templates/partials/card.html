@@ -60,7 +60,7 @@
 
         <!-- Hints (Collapsible) -->
         {% if problem.hints %}
-        <div class="mb-6">
+        <div class="mb-6" onclick="event.stopPropagation()">
             <h3 class="text-lg font-semibold mb-3 text-yellow-400">💡 Hints:</h3>
             {% for hint in problem.hints %}
             <details class="mb-2 bg-gray-800 rounded p-3">
@@ -75,7 +75,7 @@
 
         <!-- Pseudocode (Collapsible) -->
         {% if problem.pseudocode %}
-        <div class="mb-6">
+        <div class="mb-6" onclick="event.stopPropagation()">
             <details class="bg-gray-800 rounded p-3">
                 <summary class="cursor-pointer text-sm font-semibold text-blue-300 hover:text-blue-200">
                     Show Pseudocode
@@ -120,12 +120,25 @@
             <p class="text-gray-300 leading-relaxed">{{ problem.explanation }}</p>
         </div>
 
-        <!-- Code Solution -->
-        <div class="mb-6">
-            <h3 class="text-lg font-semibold mb-3 text-blue-400">📝 Solution:</h3>
-            <div class="code-block">
+        <!-- Code Solution (Python / C++ toggle; clicks here must not flip the card) -->
+        <div class="mb-6" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg font-semibold text-blue-400">📝 Solution:</h3>
+                {% if problem.code_cpp %}
+                <div class="flex gap-2">
+                    <button type="button" class="lang-tab px-3 py-1 rounded text-sm" data-lang="python" onclick="setLang('python')">Python</button>
+                    <button type="button" class="lang-tab px-3 py-1 rounded text-sm" data-lang="cpp" onclick="setLang('cpp')">C++</button>
+                </div>
+                {% endif %}
+            </div>
+            <div class="code-block lang-code" data-lang="python">
                 <pre><code>{{ problem.code }}</code></pre>
             </div>
+            {% if problem.code_cpp %}
+            <div class="code-block lang-code" data-lang="cpp" style="display: none;">
+                <pre><code>{{ problem.code_cpp }}</code></pre>
+            </div>
+            {% endif %}
         </div>
 
         <!-- Click to flip back hint -->

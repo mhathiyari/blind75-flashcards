@@ -6,6 +6,8 @@ Interactive flashcard application for mastering the Blind 75 LeetCode problems. 
 
 - **75 LeetCode problems** — the complete Blind 75 list
 - Interactive flashcard interface with flip animation
+- Solutions in **Python and C++** (toggle on the solution side; your choice is remembered)
+- Collapsible hints on every problem
 - Dark theme UI optimized for extended study sessions
 - Category-based filtering (Arrays, Dynamic Programming, Trees, etc.)
 - Navigation through problems with Previous/Next buttons

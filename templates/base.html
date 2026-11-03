@@ -75,6 +75,16 @@
             background-color: #1a4d7a;
         }
 
+        .lang-tab {
+            background-color: #0f3460;
+            color: #9ca3af;
+        }
+
+        .lang-tab.active {
+            background-color: #2563eb;
+            color: white;
+        }
+
         .category-select {
             background-color: #16213e;
             border: 1px solid #0f3460;
@@ -102,5 +112,27 @@
             <p>Built with FastAPI + HTMX + Tailwind CSS</p>
         </footer>
     </div>
+
+    <script>
+        // Remember the chosen solution language across cards (Python by default).
+        function getLang() {
+            try { return localStorage.getItem("lang") || "python"; } catch (e) { return "python"; }
+        }
+        function applyLang() {
+            var lang = getLang();
+            document.querySelectorAll(".lang-code").forEach(function (el) {
+                el.style.display = el.dataset.lang === lang ? "" : "none";
+            });
+            document.querySelectorAll(".lang-tab").forEach(function (el) {
+                el.classList.toggle("active", el.dataset.lang === lang);
+            });
+        }
+        function setLang(lang) {
+            try { localStorage.setItem("lang", lang); } catch (e) {}
+            applyLang();
+        }
+        document.body.addEventListener("htmx:afterSwap", applyLang);
+        applyLang();
+    </script>
 </body>
 </html>
