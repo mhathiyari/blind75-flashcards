@@ -29,14 +29,16 @@
     "title": "Two Sum",
     "difficulty": "Easy",
     "category": "Arrays",
-    "description": "Input: nums = [3,2,4], target = 6\nOutput: [1,2]\n```\n```",
+    "description": "Given an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target.\n\nYou may assume that each input has exactly one solution, and you may not use the same element twice. You can return the answer in any order.",
     "examples": [
-      "Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]\nExplanation: Because nums[0] + nums[1] == 9, we return [0, 1]."
+      "Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]\nExplanation: Because nums[0] + nums[1] == 9, we return [0, 1].",
+      "Input: nums = [3,2,4], target = 6\nOutput: [1,2]",
+      "Input: nums = [3,3], target = 6\nOutput: [0,1]"
     ],
     "constraints": [
       "2 <= nums.length <= 10^4",
-      "10^9 <= nums[i] <= 10^9",
-      "10^9 <= target <= 10^9",
+      "-10^9 <= nums[i] <= 10^9",
+      "-10^9 <= target <= 10^9",
       "Only one valid answer exists."
     ],
     "hints": [],
@@ -50,12 +52,15 @@
     "title": "Best Time to Buy and Sell stock",
     "difficulty": "Medium",
     "category": "Arrays",
-    "description": "",
+    "description": "You are given an array prices where prices[i] is the price of a given stock on the ith day.\n\nYou want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.\n\nReturn the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.",
     "examples": [
       "Input: prices = [7,1,5,3,6,4]\nOutput: 5\nExplanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.\nNote that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.",
       "Input: prices = [7,6,4,3,1]\nOutput: 0\nExplanation: In this case, no transactions are done and the max profit = 0."
     ],
-    "constraints": [],
+    "constraints": [
+      "1 <= prices.length <= 10^5",
+      "0 <= prices[i] <= 10^4"
+    ],
     "hints": [
       "To gain maximum profit, you have to buy at the minimum price and sell when it's at the maximum price. So, think of the problem as tracking those minimum and maximum values.",
       "Try solving it using the two-pointer concept.",
@@ -71,14 +76,15 @@
     "title": "Contains Duplicate",
     "difficulty": "Easy",
     "category": "Arrays",
-    "description": "",
+    "description": "Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.",
     "examples": [
       "Input: nums = [1,2,3,1]\nOutput: true",
       "Input: nums = [1,2,3,4]\nOutput: false",
       "Input: nums = [1,1,1,3,3,4,3,2,4,2]\nOutput: true"
     ],
     "constraints": [
-      "10^9 <= nums[i] <= 10^9"
+      "1 <= nums.length <= 10^5",
+      "-10^9 <= nums[i] <= 10^9"
     ],
     "hints": [],
     "pseudocode": "countSet -> hashSet()\n    for each number in array\n      if number exists in keyhs(countSet) then\n        return true\n      countSet.key(number).value(1)\n    return false",
@@ -98,7 +104,7 @@
     ],
     "constraints": [
       "2 <= nums.length <= 10^5",
-      "30 <= nums[i] <= 30",
+      "-30 <= nums[i] <= 30",
       "The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer."
     ],
     "hints": [
@@ -124,7 +130,7 @@
     ],
     "constraints": [
       "1 <= nums.length <= 10^5",
-      "10^4 <= nums[i] <= 10^4"
+      "-10^4 <= nums[i] <= 10^4"
     ],
     "hints": [
       "It follows similar patterns as previous problems; it's easy to come up with an O(n) solution.",
@@ -147,7 +153,7 @@
     ],
     "constraints": [
       "1 <= nums.length <= 2 * 10^4",
-      "10 <= nums[i] <= 10",
+      "-10 <= nums[i] <= 10",
       "The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer."
     ],
     "hints": [
@@ -174,7 +180,7 @@
     "constraints": [
       "n == nums.length",
       "1 <= n <= 5000",
-      "5000 <= nums[i] <= 5000",
+      "-5000 <= nums[i] <= 5000",
       "All the integers of nums are unique.",
       "nums is sorted and rotated between 1 and n times."
     ],
@@ -200,10 +206,10 @@
     ],
     "constraints": [
       "1 <= nums.length <= 5000",
-      "10^4 <= nums[i] <= 10^4",
+      "-10^4 <= nums[i] <= 10^4",
       "All values of nums are unique.",
       "nums is an ascending array that is possibly rotated.",
-      "10^4 <= target <= 10^4"
+      "-10^4 <= target <= 10^4"
     ],
     "hints": [
       "This problem is similar to find minimum in rotated sorted array. Same method, try to solve it with a target.",
@@ -227,7 +233,7 @@
     ],
     "constraints": [
       "3 <= nums.length <= 3000",
-      "10^5 <= nums[i] <= 10^5"
+      "-10^5 <= nums[i] <= 10^5"
     ],
     "hints": [
       "Three sum is a superset of the problem twosum and the target is zero always and the triplet must not contain duplicates. First fix one number let say 'x' and it's left us with to find two number like twoSum",
@@ -243,13 +249,13 @@
     "title": "Sum of Two Integers",
     "difficulty": "Medium",
     "category": "Binary & Bit Manipulation",
-    "description": "",
+    "description": "Given two integers a and b, return the sum of the two integers without using the operators + and -.",
     "examples": [
       "Input: a = 1, b = 2\nOutput: 3",
       "Input: a = 2, b = 3\nOutput: 5"
     ],
     "constraints": [
-      "1000 <= a, b <= 1000"
+      "-1000 <= a, b <= 1000"
     ],
     "hints": [
       "A and B can be either positive or negative. Logic gates to use in this ^ & << and also mask for negative numbers",
@@ -296,7 +302,7 @@
     ],
     "constraints": [
       "n == nums.length",
-      "1 <= n <= 104",
+      "1 <= n <= 10^4",
       "0 <= nums[i] <= n",
       "All the numbers of nums are unique."
     ],
@@ -394,7 +400,7 @@
     ],
     "constraints": [
       "1 <= nums.length <= 2500",
-      "10^4 <= nums[i] <= 10^4"
+      "-10^4 <= nums[i] <= 10^4"
     ],
     "hints": [
       "Use the brute force way to solve it in O(n^2) complexity. By using additional array of size n to keep track of."
@@ -657,9 +663,9 @@
       "Input: intervals = [[1,4],[4,5]]\nOutput: [[1,5]]\nExplanation: Intervals [1,4] and [4,5] are considered overlapping."
     ],
     "constraints": [
-      "1 <= intervals.length <= 10*4",
+      "1 <= intervals.length <= 10^4",
       "intervals[i].length == 2",
-      "0 <= starti <= endi <= 10*4"
+      "0 <= starti <= endi <= 10^4"
     ],
     "hints": [],
     "pseudocode": "intervals -> intervals.sort()\n    merged -> list()\n    for each interval in intervals\n      if merged.isEmpty() or merged.lastELemments(1) isLessThan interval.at(0)\n        merged.add(intervals)\n      else\n        merged.getLast(1) -> maximum(merged.getLast(1), interval.at(1))\n    return merged.toArray()",
@@ -681,7 +687,7 @@
     "constraints": [
       "1 <= intervals.length <= 10^5",
       "intervals[i].length == 2",
-      "5 * 104 <= starti < endi <= 5 * 10^4"
+      "-5 * 10^4 <= starti < endi <= 5 * 10^4"
     ],
     "hints": [
       "Sort it and keep track of previous end of every interval if it is less than or equal to current start then change previous end else takes the minimum of previous end and make the result + 1. Finally return the result."
@@ -703,8 +709,8 @@
       "Input: head = []\nOutput: []"
     ],
     "constraints": [
-      "The number of nodes in the list is the range [0, 5000].",
-      "5000 <= Node.val <= 5000"
+      "The number of nodes in the list is in the range [0, 5000].",
+      "-5000 <= Node.val <= 5000"
     ],
     "hints": [
       "Just break the link and shift the pointers in loop, prev, curr, nxt makes nxt equals to curr's next and curr's next points to prev now prev equals curr curr equals nxt. If recursion makes the head next's points to the head and makes head's next to none."
@@ -726,8 +732,8 @@
       "Input: head = [1], pos = -1\nOutput: false\nExplanation: There is no cycle in the linked list."
     ],
     "constraints": [
-      "The number of the nodes in the list is in the range [0, 104].",
-      "105 <= Node.val <= 105",
+      "The number of the nodes in the list is in the range [0, 10^4].",
+      "-10^5 <= Node.val <= 10^5",
       "pos is -1 or a valid index in the linked-list."
     ],
     "hints": [
@@ -751,7 +757,7 @@
     ],
     "constraints": [
       "The number of nodes in both lists is in the range [0, 50].",
-      "100 <= Node.val <= 100",
+      "-100 <= Node.val <= 100",
       "Both list1 and list2 are sorted in non-decreasing order."
     ],
     "hints": [
@@ -798,7 +804,7 @@
       "Input: head = [1,2,3,4,5]\nOutput: [1,5,2,4,3]"
     ],
     "constraints": [
-      "The number of nodes in the list is in the range [1, 5 * 104].",
+      "The number of nodes in the list is in the range [1, 5 * 10^4].",
       "1 <= Node.val <= 1000"
     ],
     "hints": [
@@ -1035,8 +1041,8 @@
       "Input: root = [1,null,2]\nOutput: 2"
     ],
     "constraints": [
-      "The number of nodes in the tree is in the range 0 - 10^4.",
-      "100 <= Node.val <= 100"
+      "The number of nodes in the tree is in the range [0, 10^4].",
+      "-100 <= Node.val <= 100"
     ],
     "hints": [
       "Just like tree traversal and just return the maximum of left and right tree + 1 at the end."
@@ -1058,8 +1064,8 @@
       "Input: p = [1,2,1], q = [1,1,2]\nOutput: false"
     ],
     "constraints": [
-      "The number of nodes in both trees is in the range (0, 100).",
-      "104 <= Node.val <= 10^4"
+      "The number of nodes in both trees is in the range [0, 100].",
+      "-10^4 <= Node.val <= 10^4"
     ],
     "hints": [
       "It is like a tree traversal, but here it is 2 tree. if both nodes of tree becomes null then return true and if any of the tree node becomes null or values of the node doesn't equal then return false finally call it in dual recurse."
@@ -1081,8 +1087,8 @@
       "Input: root = []\nOutput: []"
     ],
     "constraints": [
-      "The number of nodes in the tree is in the range (0, 100).",
-      "100 <= Node.val <= 100"
+      "The number of nodes in the tree is in the range [0, 100].",
+      "-100 <= Node.val <= 100"
     ],
     "hints": [
       "Traverse tree swap the left node with right by setting the current left to current right and its vice versa and finally return the root node."
@@ -1106,7 +1112,7 @@
       "m == matrix.length",
       "n == matrix[0].length",
       "1 <= m, n <= 200",
-      "231 <= matrix[i][j] <= 231 - 1",
+      "-2^31 <= matrix[i][j] <= 2^31 - 1",
       "A straightforward solution using O(mn) space is probably a bad idea.",
       "A simple improvement uses O(m + n) space, but still not the best solution.",
       "Could you devise a constant space solution?"
@@ -1133,7 +1139,7 @@
       "m == matrix.length",
       "n == matrix[i].length",
       "1 <= m, n <= 10",
-      "100 <= matrix[i][j] <= 100"
+      "-100 <= matrix[i][j] <= 100"
     ],
     "hints": [],
     "pseudocode": "",
@@ -1154,7 +1160,7 @@
     "constraints": [
       "n == matrix.length == matrix[i].length",
       "1 <= n <= 20",
-      "1000 <= matrix[i][j] <= 1000"
+      "-1000 <= matrix[i][j] <= 1000"
     ],
     "hints": [
       "If you notice from the real matrix to rotate matrix it will follow some pattern, if you find it, it will be very easy.",
